@@ -1,7 +1,5 @@
 # Welcome to PostCasts
 
-[![Build Status](https://travis-ci.org/geut/chan.svg?branch=master)](https://travis-ci.org/geut/chan)
-
 This **PostCast** will teach you how to get started producing your own _guide_.
 
 ## Introduction
