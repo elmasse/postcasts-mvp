@@ -78,7 +78,7 @@ export default class Frame extends Component {
 
     if (playing && synth.paused) synth.resume()
     
-    if (!playing && synth.playing) synth.pause()
+    if (!playing && synth.speaking) synth.pause()
 
   }
 
