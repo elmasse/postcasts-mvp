@@ -134,7 +134,6 @@ export default class Player extends Component {
   next = () => {
     const { active, frames } = this.state
     const next = active + 1
-
     if (next >= frames.length) {
       this.setState({
         playing: false
@@ -159,9 +158,8 @@ export default class Player extends Component {
   }
 
   render() {
-    const { frames, active, playing } = this.state
-    
-    const frame = frames[active]
+    const { frames, active, playing } = this.state    
+    const frame = {...frames[active]}
     const { type: Frame } = frame
     
     return (

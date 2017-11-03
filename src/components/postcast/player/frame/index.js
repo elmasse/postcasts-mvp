@@ -67,7 +67,7 @@ export default class Frame extends Component {
 
   stop = () => {
     if (synth.speaking) {
-      
+      synth.cancel()
     }
   }
 
@@ -82,6 +82,15 @@ export default class Frame extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps) {
+    // TODO: check this...
+    if (nextProps.children) {
+      this.setState({
+        textToSpeech: textToSpeech({...this, props: { children: nextProps.children }})  // Hmmmm      
+      })
+    }
+  }
+
   render() {
     const { children, ...props } = this.props
     return <Framed {...props}>{children}</Framed>
@@ -93,9 +102,9 @@ export default class Frame extends Component {
 
   componentWillUnmount() {
     this.utterance = null
-    // const { playing } = this.props
+    const { playing } = this.props
     
-    // if (playing) this.stop()
+    if (playing) this.stop()
     
   }
 }
