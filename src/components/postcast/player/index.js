@@ -160,15 +160,15 @@ export default class Player extends Component {
 
   render() {
     const { frames, active, playing } = this.state
-
-    const frame = { ...frames[active] }
-    frame.props = { ...frame.props, done: this.next, playing }
+    
+    const frame = frames[active]
+    const { type: Frame } = frame
     
     return (
       <Container>
 
         <Viewport>
-          {frame}
+          <Frame {...frame.props} done={this.next} playing={playing}/>
         </Viewport>
 
         <Toolbar 
