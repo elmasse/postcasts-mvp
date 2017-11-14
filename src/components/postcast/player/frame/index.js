@@ -51,7 +51,6 @@ export default class Frame extends Component {
       }
       
       this.utterance.onend = () => {
-        console.log(`utterance end. cancelled: ${this._cancelled}`)
         if (this._cancelled) {
           this._cancelled = false
           return
@@ -110,7 +109,6 @@ export default class Frame extends Component {
   }
 
   componentDidUpdate() {
-    console.log('didUpdate')
     this.shouldStartPlaying()
   }
 

@@ -95,8 +95,6 @@ const frameify = () => (tree) => {
 const process = markdown => {
   return unified()
     .use(remarkParse)
-    // .use(remarkFrontMatter)
-    // .use(() => (tree) => {console.log(tree); return tree})
     .use(remark2rehype, { allowDangerousHTML: true })
     .use(raw)
     .use(frameify)
@@ -134,8 +132,6 @@ export default class Player extends Component {
     const { active, frames } = this.state
     const next = active + 1
     
-    console.log('next', next, frames.length)
-
     if (next >= frames.length) {
 
       this.setState({
