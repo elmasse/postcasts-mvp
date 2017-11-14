@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-
 const textToSpeech = (comp) => {
 
   const walk = (c) => {
@@ -26,7 +25,7 @@ export default class Frame extends Component {
 
   constructor(props) {
     super(props)
-
+    this._cancelled = false
     this.state = {
       duration: props.duration || 2500,
       textToSpeech: textToSpeech(this)
@@ -39,6 +38,8 @@ export default class Frame extends Component {
   play = () => {
     const { done } = this.props
     const { duration, textToSpeech } = this.state
+    
+    this._running = undefined
 
     if (textToSpeech) {
       this.utterance = new SpeechSynthesisUtterance(textToSpeech)
@@ -50,13 +51,19 @@ export default class Frame extends Component {
       }
       
       this.utterance.onend = () => {
+        console.log(`utterance end. cancelled: ${this._cancelled}`)
+        if (this._cancelled) {
+          this._cancelled = false
+          return
+        }
+
         const { playing } = this.props
         console.log('speak end', textToSpeech, this.props.playing)
         if (playing) done()
       }
       synth.speak(this.utterance)
     } else {
-      setTimeout(( ) => {
+      this._running = window.setTimeout(( ) => {
         const { playing } = this.props
         console.log('timeout end', playing)
         if (playing) done()
@@ -67,7 +74,11 @@ export default class Frame extends Component {
 
   stop = () => {
     if (synth.speaking) {
+      this._cancelled = true
       synth.cancel()
+    }
+    if (this._running) {
+      window.clearTimeout(this._running)
     }
   }
 
@@ -85,6 +96,8 @@ export default class Frame extends Component {
   componentWillReceiveProps(nextProps) {
     // TODO: check this...
     if (nextProps.children) {
+      this.stop()
+
       this.setState({
         textToSpeech: textToSpeech({...this, props: { children: nextProps.children }})  // Hmmmm      
       })
@@ -97,6 +110,7 @@ export default class Frame extends Component {
   }
 
   componentDidUpdate() {
+    console.log('didUpdate')
     this.shouldStartPlaying()
   }
 

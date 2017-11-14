@@ -1,16 +1,10 @@
 import hljs from 'highlight.js';
 import React from 'react';
+// eslint-disable-next-line
 import css from 'highlight.js/styles/atom-one-light.css'
 
 
 class Highlight extends React.Component {
-
-    // constructor(props) {
-    //     super(props)
-    //     hljs.configure({
-    //         tabReplace: "  "            
-    //     });        
-    // }
 
     componentDidMount() {
         this.highlightCode();

@@ -15,7 +15,6 @@ import Caption from './frame/caption'
 import Content from './frame/content'
 import Code from './frame/code'
 
-import Timeline from './timeline'
 import Toolbar from './toolbar'
 
 
@@ -30,14 +29,14 @@ const onlyImages = (node) => {
   return true
 }
 
-const isFrameCode = (frame) => {
-  const [ content ] = frame.children
-  const { children } = content
-  const [ child ] = children  
+// const isFrameCode = (frame) => {
+//   const [ content ] = frame.children
+//   const { children } = content
+//   const [ child ] = children  
 
-  return (children.length === 1 && child.tagName === 'postcast-code')
+//   return (children.length === 1 && child.tagName === 'postcast-code')
 
-}
+// }
 
 const frameify = () => (tree) => {
   const { children } = tree
@@ -134,14 +133,17 @@ export default class Player extends Component {
   next = () => {
     const { active, frames } = this.state
     const next = active + 1
+    
+    console.log('next', next, frames.length)
+
     if (next >= frames.length) {
+
       this.setState({
         playing: false
       })
     } else {
-      this.setState({active: next})
+      this.setState({active: next})      
     }
-
   }
 
   handlePause = () => {
@@ -157,23 +159,28 @@ export default class Player extends Component {
     })
   }
 
+  handleFrameChange = (value) => {
+    this.setState({ active: value })
+  }
+
   render() {
     const { frames, active, playing } = this.state    
     const frame = {...frames[active]}
     const { type: Frame } = frame
-    
+
     return (
       <Container>
-
         <Viewport>
           <Frame {...frame.props} done={this.next} playing={playing}/>
         </Viewport>
-
-        <Toolbar 
+        <Toolbar
           onPlay={this.handlePlay}
           onPause={this.handlePause}
           onStop={this.handleStop}
+          onChangeFrame={this.handleFrameChange}
           playing={playing}
+          frames={frames}
+          active={active}
         />
       </Container>
     )

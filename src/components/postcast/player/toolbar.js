@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-export default ({ open, onPlay, onPause, onStop, playing, ...props }) => {
+import Timeline from './timeline'
+
+export default ({ open, onPlay, onPause, onStop, playing, frames, active, onChangeFrame, ...props }) => {
   const playPauseText = !playing ? 'Play' : 'Pause'
   const playPauseAction = !playing ? onPlay : onPause
 
@@ -9,6 +11,7 @@ export default ({ open, onPlay, onPause, onStop, playing, ...props }) => {
     <Toolbar {...props}>
       <button onClick={()=> playPauseAction() } >{playPauseText}</button>
       <button onClick={()=> onStop() } >Stop</button>
+      <Timeline active={active} frames={frames} onChangeFrame={onChangeFrame} />
     </Toolbar>
   )
 }
@@ -20,5 +23,5 @@ const Toolbar = styled('div')`
   left: 0;
   right: 0;
   background: rgba(0,0,0,.7);
-  display: flex;  
+  display: flex;
 `
