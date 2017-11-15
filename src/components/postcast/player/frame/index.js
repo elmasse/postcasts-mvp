@@ -3,16 +3,16 @@ import styled from 'react-emotion'
 
 const textToSpeech = (comp) => {
 
+  const isStringNode = (node) => (typeof node === 'string')
+
   const walk = (c) => {
     const { children = [] } = c.props
     return children
-      .filter((e, idx, all ) => { 
-        const isStringNode = (typeof e === 'string')
-        
-        return ( isStringNode || !(e.type.name === 'Content' && all.length > 1))
+      .filter((child, _, all) => { 
+        return ( isStringNode(child) || !(child.type.name === 'Content' && all.length > 1))
       })
-      .map((e) => (typeof e === 'string') ? (e) : (e.type.name !== 'Code') ? walk(e) : '')
-      .reduce((p, e) => p.concat(e) , [])
+      .map((child) => isStringNode(child) ? (child) : (child.type.name !== 'Code') ? walk(child) : '')
+      .reduce((prev, curr) => prev.concat(curr) , [])
       .join(' ')
   }
 
@@ -23,9 +23,12 @@ const synth = window.speechSynthesis
 
 export default class Frame extends Component {
 
+  _cancelled = false
+  _running = undefined
+
   constructor(props) {
     super(props)
-    this._cancelled = false
+    
     this.state = {
       duration: props.duration || 2500,
       textToSpeech: textToSpeech(this)
@@ -92,13 +95,13 @@ export default class Frame extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps({ children }) {
     // TODO: check this...
-    if (nextProps.children) {
+    if ( children ) {
       this.stop()
 
       this.setState({
-        textToSpeech: textToSpeech({...this, props: { children: nextProps.children }})  // Hmmmm      
+        textToSpeech: textToSpeech({...this, props: { children }})  // Hmmmm      
       })
     }
   }
