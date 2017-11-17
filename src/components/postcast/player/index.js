@@ -88,12 +88,18 @@ const frameify = ({ data }) => (tree) => {
         }
         break
       default:
+        console.log(`${tagName} is not processed`)
         break
     }
 
   }
 
   return u('root', frames)
+}
+
+const cleanNodes = () => tree => {
+  tree.children = tree.children.filter(c => !!c.tagName)
+  return tree
 }
 
 const process = markdown => {
@@ -103,7 +109,8 @@ const process = markdown => {
   return unified()
     .use(remarkParse)
     .use(remark2rehype, { allowDangerousHTML: true })
-    .use(raw)    
+    .use(raw)
+    .use(cleanNodes)
     .use(frameify, { data })
     .use(reactRenderer, {
       createElement: React.createElement,
