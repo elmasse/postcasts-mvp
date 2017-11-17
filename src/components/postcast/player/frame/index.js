@@ -4,14 +4,14 @@ import styled from 'react-emotion'
 const textToSpeech = (comp) => {
 
   const isStringNode = (node) => (typeof node === 'string')
-
+  const sanitize = textNode => textNode.replace(/[·]/gi, '') //hmmmm....
   const walk = (c) => {
     const { children = [] } = c.props
     return children
       .filter((child, _, all) => { 
         return ( isStringNode(child) || !(child.type.name === 'Content' && all.length > 1))
       })
-      .map((child) => isStringNode(child) ? (child) : (child.type.name !== 'Code') ? walk(child) : '')
+      .map((child) => isStringNode(child) ? (sanitize(child)) : (child.type.name !== 'Code') ? walk(child) : '')
       .reduce((prev, curr) => prev.concat(curr) , [])
       .join(' ')
   }
@@ -30,7 +30,7 @@ export default class Frame extends Component {
     super(props)
     
     this.state = {
-      duration: props.duration || 2500,
+      duration: props.duration || 1000,
       textToSpeech: textToSpeech(this)
     }
 
@@ -41,7 +41,7 @@ export default class Frame extends Component {
   play = () => {
     const { done } = this.props
     const { duration, textToSpeech } = this.state
-    
+
     this._running = undefined
 
     if (textToSpeech) {
@@ -52,7 +52,7 @@ export default class Frame extends Component {
       this.utterance.onerror = (...errors) => {
         console.log(errors)
       }
-      
+
       this.utterance.onend = () => {
         if (this._cancelled) {
           this._cancelled = false
@@ -67,7 +67,7 @@ export default class Frame extends Component {
     } else {
       this._running = window.setTimeout(( ) => {
         const { playing } = this.props
-        console.log('timeout end', playing)
+        console.log('timeout end', duration, playing)
         if (playing) done()
       }, duration)
     }
