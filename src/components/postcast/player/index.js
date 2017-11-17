@@ -3,12 +3,12 @@ import styled from 'react-emotion'
 
 import unified from 'unified'
 import remarkParse from 'remark-parse'
-// import remarkFrontMatter from 'remark-frontmatter'
 import remark2rehype from 'remark-rehype'
 import reactRenderer from 'rehype-react'
 import raw from 'rehype-raw'
 import u from 'unist-builder'
 import h from 'hastscript'
+import fm  from 'frontmatter'
 
 import Frame from './frame'
 import Caption from './frame/caption'
@@ -38,14 +38,18 @@ const onlyImages = (node) => {
 
 // }
 
-const frameify = () => (tree) => {
+const frameify = ({ data }) => (tree) => {
   const { children } = tree
   const frames = []
   let content, caption
 
+  if ( data && data.title ) {
+    content = h('postcast-content', [h('h1', [data.title])] )
+    frames.push(h('postcast-frame',[content]))
+  }
+
   for ( const node of children ) {
     const { tagName } = node
-
     switch (tagName) {
       case 'h1':
       case 'h2':
@@ -93,11 +97,14 @@ const frameify = () => (tree) => {
 }
 
 const process = markdown => {
+  
+  const { data, content } = fm(markdown)
+
   return unified()
     .use(remarkParse)
     .use(remark2rehype, { allowDangerousHTML: true })
-    .use(raw)
-    .use(frameify)
+    .use(raw)    
+    .use(frameify, { data })
     .use(reactRenderer, {
       createElement: React.createElement,
       components: { 
@@ -107,7 +114,9 @@ const process = markdown => {
         'postcast-code': Code
       }
     })
-    .processSync(markdown).contents.props.children
+    .processSync(content).contents.props.children
+  
+  
 }
 
 export default class Player extends Component {
@@ -115,6 +124,7 @@ export default class Player extends Component {
   constructor(props) {
     super(props)
     const { markdown } = props
+
     this.state = {
       active: 0,
       playing: false,
