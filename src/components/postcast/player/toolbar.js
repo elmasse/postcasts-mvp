@@ -11,6 +11,8 @@ export default ({ open, onPlay, onPause, onStop, playing, frames, active, onChan
     <Toolbar {...props}>
       <button onClick={()=> playPauseAction() } >{playPauseText}</button>
       <button onClick={()=> onStop() } >Stop</button>
+      <button >&lt;</button>
+      <button >&gt;</button>
       <Timeline active={active} frames={frames} onChangeFrame={onChangeFrame} />
     </Toolbar>
   )

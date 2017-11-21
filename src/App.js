@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { keyframes } from 'react-emotion'
 
+import Navigation from './components/navigation'
 import PostCast from './components/postcast'
 import LoadForm from './components/load-form'
 import ErrorModal from './components/error-modal'
@@ -36,11 +37,10 @@ class App extends Component {
     return (
       <Wrapper>
         {error && <ErrorModal>Error Ocurred</ErrorModal> }
-        <div className="App-header">
-          <h2>PostCast MVP</h2>
+        <Navigation />
+        <div className="App-header">          
           <LoadForm onSelected={this.handleSourceSelection}/>
         </div>
-
         {!error && <PostCast className="PostCast" src={src}/>}
       </Wrapper>
     );
@@ -63,7 +63,6 @@ text-align: center;
 }
 & .App-header {
   background-color: #222;
-  height: 150px;
   padding: 20px;
 }
 
@@ -71,3 +70,4 @@ text-align: center;
   margin: 20px auto;
 }
 `;
+
