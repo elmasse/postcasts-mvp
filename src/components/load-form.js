@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
+import styled from 'react-emotion'
 
 export default class LoadForm extends Component {
   
-  static defaultProps = {
-    src: 'posts/first.md'
-  }
+  // static defaultProps = {
+  //   src: 'posts/first.md'
+  // }
   
   constructor(props) {
     super(props)
 
     this.state = {
-      src: props.src
+      src: props.src || ''
     }
   }
 
@@ -20,6 +21,13 @@ export default class LoadForm extends Component {
     this.setState({
       [name]: value
     })
+  }
+
+  handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()      
+      this.handleSubmit()
+    }
   }
 
   handleSubmit = () => {
@@ -32,14 +40,26 @@ export default class LoadForm extends Component {
     const { src } = this.state
     return (
       <div>
-        <input 
+        <Input 
           name="src"
           value={src}
+          placeholder="url to markdown file"
           onChange={this.handleInputChange}
+          onKeyPress={this.handleKeyPress}
         />
-        <button onClick={this.handleSubmit}>Load</button>
       </div>
     )
   }
 
 }
+
+const Input = styled.input`
+  border: none;
+  border-bottom: 1px solid #424242;
+  background: rgba(0,0,0, 0);
+  font-size: 32px;
+  color: #f1f1f1;
+  font-weight: 100;
+  outline-color: #222;
+  min-width: 500px;
+`

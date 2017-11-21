@@ -13,24 +13,23 @@ export default class PostCast extends Component  {
     }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     const { src } = this.props
-    this.fetchPost(src)
+    await this.fetchPost(src)
   }
 
-  componentDidUpdate(prevProps) {
+   async componentDidUpdate(prevProps) {
     const { src } = this.props
     const { src: prevSrc } = prevProps
     if (prevSrc !== src) {
-      this.fetchPost(src)
+        await this.fetchPost(src)
     }
   }
 
-  async fetchPost(src) {    
+  async fetchPost(src) {
     if (!src) return //TODO clean state
 
     this.setState({ loading: true })
-
     const response = await fetch(src)
 
     console.log(response.headers.get("content-type"))
@@ -47,7 +46,8 @@ export default class PostCast extends Component  {
       loading: false,
       markdown: text
     })
-  }
+
+  } 
 
   render () {
     const { src, ...props } = this.props
