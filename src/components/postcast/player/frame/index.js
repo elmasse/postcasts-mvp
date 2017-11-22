@@ -2,10 +2,15 @@ import React, { Component } from 'react'
 import { findDOMNode } from 'react-dom'
 import styled from 'react-emotion'
 
-const textToSpeech = (comp) => {
+//move this
 
-  const isStringNode = node => (typeof node === 'string')
-  const isCodeNode = node => node.type.name === 'Code'
+const isStringNode = node => (typeof node === 'string')
+
+const isCodeNode = node => node.type.name === 'Code'
+const isCaptionNode = node => node.type.name === 'Caption'
+const isContentNode = node => node.type.name === 'Content'
+
+const processTextToSpeech = (children) => {
 
   const sanitize = textNode => textNode.replace(/[·]/gi, '') //hmmmm....
 
@@ -13,14 +18,14 @@ const textToSpeech = (comp) => {
     const { children = [] } = c.props
     return children
       .filter((child, _, all) => { 
-        return ( isStringNode(child) || !(child.type.name === 'Content' && all.length > 1))
+        return ( isStringNode(child) || !(isContentNode(child) && all.length > 1))
       })
       .map((child) => isStringNode(child) ? (sanitize(child)) : (!isCodeNode(child)) ? walk(child) : '')
       .reduce((prev, curr) => prev.concat(curr) , [])
       .join(' ')
   }
 
-  return walk(comp)
+  return walk({ props: { children } })
 }
 
 const synth = window.speechSynthesis
@@ -35,7 +40,7 @@ export default class Frame extends Component {
     
     this.state = {
       duration: props.duration || 1000,
-      textToSpeech: textToSpeech(this)
+      textToSpeech: processTextToSpeech(props.children)
     }
 
     this.shouldStartPlaying()
@@ -112,20 +117,23 @@ export default class Frame extends Component {
     }
   }
 
-  componentWillReceiveProps({ children }) {
-    // TODO: check this...
-    if ( children ) {
+  componentWillReceiveProps({ children }) {    
+    if ( children !== this.props.children ) {
       this.stop()
-
+      // TODO: check this...
       this.setState({
-        textToSpeech: textToSpeech({...this, props: { children }})  // Hmmmm      
+        textToSpeech: processTextToSpeech(children)  // Hmmmm      
       })
     }
   }
 
   render() {
-    const { children, ...props } = this.props
-    return <Framed {...props}>{children}</Framed>
+    const { children, captions, ...props } = this.props
+    return (
+      <Framed {...props}>
+        {children.filter( c => captions || (!isCaptionNode(c)) )}
+      </Framed>
+    )
   }
 
   componentDidUpdate() {

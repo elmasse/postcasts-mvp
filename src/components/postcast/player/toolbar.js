@@ -1,9 +1,7 @@
 import React from 'react'
 import styled from 'react-emotion'
 
-import Timeline from './timeline'
-
-export default ({ open, onPlay, onPause, onStop, playing, frames, active, onChangeFrame, ...props }) => {
+export default ({ open, onPlay, onPause, onStop, playing, children, ...props }) => {
   const playPauseText = !playing ? 'Play' : 'Pause'
   const playPauseAction = !playing ? onPlay : onPause
 
@@ -11,9 +9,7 @@ export default ({ open, onPlay, onPause, onStop, playing, frames, active, onChan
     <Toolbar {...props}>
       <button onClick={()=> playPauseAction() } >{playPauseText}</button>
       <button onClick={()=> onStop() } >Stop</button>
-      <button >&lt;</button>
-      <button >&gt;</button>
-      <Timeline active={active} frames={frames} onChangeFrame={onChangeFrame} />
+      {children}
     </Toolbar>
   )
 }
