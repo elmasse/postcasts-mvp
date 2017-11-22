@@ -4,15 +4,18 @@ import styled from 'react-emotion'
 
 const textToSpeech = (comp) => {
 
-  const isStringNode = (node) => (typeof node === 'string')
+  const isStringNode = node => (typeof node === 'string')
+  const isCodeNode = node => node.type.name === 'Code'
+
   const sanitize = textNode => textNode.replace(/[·]/gi, '') //hmmmm....
+
   const walk = (c) => {
     const { children = [] } = c.props
     return children
       .filter((child, _, all) => { 
         return ( isStringNode(child) || !(child.type.name === 'Content' && all.length > 1))
       })
-      .map((child) => isStringNode(child) ? (sanitize(child)) : (child.type.name !== 'Code') ? walk(child) : '')
+      .map((child) => isStringNode(child) ? (sanitize(child)) : (!isCodeNode(child)) ? walk(child) : '')
       .reduce((prev, curr) => prev.concat(curr) , [])
       .join(' ')
   }
@@ -42,6 +45,7 @@ export default class Frame extends Component {
   play = () => {
     const { done } = this.props
     const { duration, textToSpeech } = this.state
+    const lang  = 'en-US'
 
     this._running = undefined
 
@@ -49,7 +53,7 @@ export default class Frame extends Component {
       this.utterance = new SpeechSynthesisUtterance(textToSpeech)
       this.utterance.rate = 0.9
       this.utterance.pitch = 0.75
-      this.utterance.lang = 'en'
+      this.utterance.voice = synth.getVoices().filter(l => l.lang === lang)[0]
       
       this.utterance.onerror = (...errors) => {
         console.log(errors)
