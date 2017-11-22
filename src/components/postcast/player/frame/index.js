@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { findDOMNode } from 'react-dom'
 import styled from 'react-emotion'
 
 const textToSpeech = (comp) => {
@@ -95,6 +96,17 @@ export default class Frame extends Component {
 
   }
 
+  resetAnchorTarget = () => {
+    const root = findDOMNode(this)
+    if (root) {
+      root.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach(tag => { 
+        tag.target = '_blank'
+        tag.rel='noopener noreferrer'
+        console.log(tag.href)
+      })
+    }
+  }
+
   componentWillReceiveProps({ children }) {
     // TODO: check this...
     if ( children ) {
@@ -112,7 +124,13 @@ export default class Frame extends Component {
   }
 
   componentDidUpdate() {
+    this.resetAnchorTarget()
     this.shouldStartPlaying()
+    
+  }
+
+  componentDidMount() {
+    this.resetAnchorTarget()
   }
 
   componentWillUnmount() {
