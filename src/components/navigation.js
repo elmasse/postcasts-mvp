@@ -10,9 +10,9 @@ export default () => (
   </Nav>
 )
 
-const spinFrames = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+const popFrames = keyframes`
+  30% { transform: scale(.5); }
+  60% { transform: scale(1.5); }  
 `
 
 
@@ -24,7 +24,7 @@ const Nav = styled.nav`
 `
 
 const spinned = css`
-  animation: ${spinFrames} 1s ease-in-out;
+  animation: ${popFrames} 1s ease-in-out;
 `
 
 const Title = styled.div`
