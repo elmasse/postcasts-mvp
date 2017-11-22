@@ -25,4 +25,7 @@ const Captioned = styled.div`
   padding: 0px 20px;
   color: white;
   text-shadow: 0px 0px 2px black;
+  a {
+    text-shadow: none;
+  }
 `
