@@ -56,6 +56,7 @@ const frameify = ({ data }) => (tree) => {
       case 'h3':
       case 'h4':
       case 'img':
+      case 'blockquote':
         content = h('postcast-content', [node])
         frames.push(h('postcast-frame',[content]))
         break
@@ -86,7 +87,7 @@ const frameify = ({ data }) => (tree) => {
           content = h('postcast-content', [h('ul', [child])])
           frames.push(h('postcast-frame',[content]))
         }
-        break
+        break        
       default:
         console.log(`${tagName} is not processed`)
         break
