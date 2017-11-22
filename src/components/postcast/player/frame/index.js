@@ -49,6 +49,7 @@ export default class Frame extends Component {
       this.utterance = new SpeechSynthesisUtterance(textToSpeech)
       this.utterance.rate = 0.9
       this.utterance.pitch = 0.75
+      this.utterance.lang = 'en'
       
       this.utterance.onerror = (...errors) => {
         console.log(errors)
