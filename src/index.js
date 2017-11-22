@@ -1,8 +1,7 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { injectGlobal } from 'react-emotion';
-import App from './app';
-import registerServiceWorker from './registerServiceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { injectGlobal } from 'react-emotion'
+import App from './app'
 
 // eslint-disable-next-line
 injectGlobal`
@@ -13,7 +12,7 @@ injectGlobal`
     color: #f1f1f1;
     background: #222;
   }
-`;
+`
 
-ReactDOM.render(<App />, document.getElementById('root'));
-registerServiceWorker();
+ReactDOM.render(<App />, document.getElementById('root'))
+

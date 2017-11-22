@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import Navigation from './components/navigation'
@@ -58,7 +58,7 @@ export default class App extends Component {
         </div>
         {!error && <PostCast className="PostCast" src={src}/>}
       </Wrapper>
-    );
+    )
   }
 }
 
