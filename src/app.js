@@ -52,7 +52,7 @@ export default class App extends Component {
         <Navigation />
         <div className="App-header">
           <LoadForm onSelected={this.handleSourceSelection}/>
-          <span>Or try these from github</span>
+          <span>Or try these README.md from github</span>
           <ReactIcon onClick={this.loadReact} height="40" width="40"/>
           <ReduxIcon onClick={this.loadRedux} height="40" width="40" />
         </div>
@@ -72,6 +72,7 @@ const Wrapper = styled.div`
     padding: 20px;
 
     span {
+      font-size: 14px;
       margin: 0 20px;
       font-weight: 100;
     }
