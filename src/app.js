@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
+import ga from './analytics'
+
 import Navigation from './components/navigation'
 import PostCast from './components/postcast'
 import LoadForm from './components/load-form'
@@ -29,6 +31,7 @@ export default class App extends Component {
   }
 
   handleSourceSelection = (src) => {
+    ga.send('event', { ec: 'load', ea: src })
     this.setState({
       error: false,
       src
@@ -59,6 +62,10 @@ export default class App extends Component {
         {!error && <PostCast className="PostCast" src={src}/>}
       </Wrapper>
     )
+  }
+
+  componentDidMount () {
+    ga.send('pageview')
   }
 }
 

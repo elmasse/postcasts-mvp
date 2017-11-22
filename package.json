@@ -6,6 +6,7 @@
     "babel-plugin-emotion": "^8.0.6",
     "emotion": "^8.0.8",
     "frontmatter": "0.0.3",
+    "ganalytics": "^2.0.1",
     "hastscript": "^3.1.0",
     "highlight.js": "^9.12.0",
     "react": "^16.0.0",
