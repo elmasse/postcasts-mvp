@@ -11,8 +11,8 @@ export default () => (
 )
 
 const popFrames = keyframes`
-  30% { transform: scale(.5); }
-  60% { transform: scale(1.5); }  
+  30% { transform: scale(.6); }
+  60% { transform: scale(1.25); }  
 `
 
 
