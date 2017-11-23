@@ -27,26 +27,33 @@ export default class PostCast extends Component  {
   }
 
   async fetchPost(src) {
-    if (!src) return //TODO clean state
+    if (src) {
 
-    this.setState({ loading: true })
-    const response = await fetch(src)
+      this.setState({ loading: true })
+      const response = await fetch(src)
 
-    console.log(response.headers.get("content-type"))
-    
-    if (!(response.headers.get("content-type").includes(`text/markdown`) ||
-      response.headers.get("content-type").includes(`text/plain`))) {
-      throw new Error(`${src} is not a markdown file`)
+      console.log(response.headers.get("content-type"))
+      
+      if (!(response.headers.get("content-type").includes(`text/markdown`) ||
+        response.headers.get("content-type").includes(`text/plain`))) {
+        throw new Error(`${src} is not a markdown file`)
+      }
+
+      const text = await response.text()
+
+      this.setState({
+        loaded: true,
+        loading: false,
+        markdown: text
+      })
+
+    } else {
+      this.setState({
+        loaded: false,
+        loading: false,
+        markdown: ''
+      })
     }
-
-    const text = await response.text()
-
-    this.setState({
-      loaded: true,
-      loading: false,
-      markdown: text
-    })
-
   } 
 
   render () {
@@ -69,6 +76,7 @@ const Container = styled('div') `
   position: relative;
   display: flex;
   overflow: hidden;
+  box-shadow: 0 0 20px rgba(127, 127, 127, .2);
 
   > div {
     flex: 1;

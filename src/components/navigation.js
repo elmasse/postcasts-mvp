@@ -4,9 +4,9 @@ import styled, { css, keyframes } from 'react-emotion'
 import Logo from './logo'
 
 
-export default () => (
+export default ({ onNavHome}) => (
   <Nav>
-    <Title><Logo css={spinned} fill="#f1f1f1" height="42" width="42" style={{paddingRight: 5}}/>Postcast</Title>
+    <Title onClick={() => onNavHome()}><Logo css={spinned} fill="#f1f1f1" height="42" width="42" style={{paddingRight: 5}}/>Postcast</Title>
   </Nav>
 )
 
@@ -27,7 +27,9 @@ const spinned = css`
   animation: ${popFrames} 1s ease-in-out;
 `
 
-const Title = styled.div`
+const Title = styled.a`
+  text-decoration: none;
+  color: #f1f1f1;
   font-family: 'Unica One';
   font-size: 24px;
   display: flex;

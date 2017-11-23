@@ -1,52 +1,24 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import ga from './analytics'
 
-import Navigation from './components/navigation'
-import PostCast from './components/postcast'
-import LoadForm from './components/load-form'
-import ErrorModal from './components/error-modal'
+import Home from './routes/home'
 
 export default class App extends Component {
   
-  constructor(props){
-    super(props)
-    this.state =  {
-      src: undefined,
-      error: null,
-      errorInfo: null
-    }
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo)
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    })
-  }
-
-  handleSourceSelection = (src) => {
-    ga.send('event', { ec: 'load', ea: src })
-    this.setState({
-      error: false,
-      src
-    })
-  }
-
   render() {
-    const { src, error } = this.state
-
     return (
-      <Wrapper>
-        {error && <ErrorModal>Error Ocurred</ErrorModal> }
-        <Navigation />
-        <div className="App-header">
-          <LoadForm onSelected={this.handleSourceSelection}/>
-        </div>
-        {!error && <PostCast className="PostCast" src={src}/>}
-      </Wrapper>
+      <Router>
+        <div>
+          <Route 
+            path="/play/:encoded" 
+            children={ (props) => {
+              return (<Home {...props} />)
+            } }
+          />
+      </div>
+    </Router>
     )
   }
 
@@ -55,17 +27,3 @@ export default class App extends Component {
   }
 }
 
-
-const Wrapper = styled.div`
-  text-align: center;
-  & .App-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  & .PostCast {
-    margin: 20px auto;
-  }
-`
