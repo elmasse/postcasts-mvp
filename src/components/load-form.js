@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled, { keyframes } from 'react-emotion'
+import styled from 'react-emotion'
 
 import ReactIcon from './icons/react'
 import ReduxIcon from './icons/redux'
@@ -90,7 +90,6 @@ const Form = styled.div`
     display: ${ ({focused}) => focused ? 'none' : 'block' };
   }
 `
-
 
 const Input = styled.input`
   border: none;
