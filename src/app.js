@@ -44,9 +44,6 @@ export default class App extends Component {
         <Navigation />
         <div className="App-header">
           <LoadForm onSelected={this.handleSourceSelection}/>
-          {/* <span>Or try these README.md from github</span>
-          <ReactIcon onClick={this.loadReact} height="40" width="40" />
-          <ReduxIcon onClick={this.loadRedux} height="40" width="40" /> */}
         </div>
         {!error && <PostCast className="PostCast" src={src}/>}
       </Wrapper>
