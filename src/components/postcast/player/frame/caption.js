@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled, { keyframes } from 'react-emotion'
 
 export default class Caption extends Component {
-
+  static displayName = 'Caption'
   render() {
     const { children } = this.props
     return (

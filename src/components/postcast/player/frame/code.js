@@ -3,7 +3,8 @@ import Highlight from './code-highlight'
 import styled from 'react-emotion'
 
 export default class Code extends Component {
-
+  static displayName = 'Code'
+  
   render() {
     const { className = "", children } = this.props
     const [, lang] = className.split('-')

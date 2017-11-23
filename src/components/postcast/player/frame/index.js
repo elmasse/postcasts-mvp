@@ -6,9 +6,9 @@ import styled from 'react-emotion'
 
 const isStringNode = node => (typeof node === 'string')
 
-const isCodeNode = node => node.type.name === 'Code'
-const isCaptionNode = node => node.type.name === 'Caption'
-const isContentNode = node => node.type.name === 'Content'
+const isCodeNode = node => node.type.displayName === 'Code'
+const isCaptionNode = node => node.type.displayName === 'Caption'
+const isContentNode = node => node.type.displayName === 'Content'
 
 const processTextToSpeech = (children) => {
 
@@ -59,7 +59,7 @@ export default class Frame extends Component {
       this.utterance.rate = 0.9
       this.utterance.pitch = 0.75
       this.utterance.voice = synth.getVoices().filter(l => l.lang === lang)[0]
-      
+
       this.utterance.onerror = (...errors) => {
         console.log(errors)
       }
