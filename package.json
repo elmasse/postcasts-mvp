@@ -20,14 +20,19 @@
     "rehype-react": "^3.0.1",
     "remark-parse": "^4.0.0",
     "remark-rehype": "^2.0.1",
+    "serve": "^6.4.1",
     "unified": "^6.1.5",
     "unist-builder": "^1.0.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
+    "now-start": "serve --single ./build",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "now":{
+    "alias": "postcast-app"
   },
   "devDependencies": {
     "react-app-rewired": "^1.3.3"
