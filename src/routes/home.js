@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import Navigation from '../components/navigation'
+import ga from '../analytics'
 
+import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import ReactIcon from '../components/icons/react'
 import ReduxIcon from '../components/icons/redux'
@@ -39,6 +40,9 @@ export default class Home extends Component {
   
   handleSourceSelection = (src) => {
     const { history } = this.props
+    
+    ga.send('event', { ec: 'load-src', ea: src })
+    
     history.push(`/play/${encode(src)}`)
   }
 
