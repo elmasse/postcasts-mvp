@@ -5,6 +5,7 @@ import ga from '../analytics'
 
 import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
+import NpmIcon from '../components/icons/npm'
 import ReactIcon from '../components/icons/react'
 import ReduxIcon from '../components/icons/redux'
 import VSCodeIcon from '../components/icons/vscode'
@@ -46,19 +47,10 @@ export default class Home extends Component {
     history.push(`/play/${encode(src)}`)
   }
 
-  loadReact = () => {    
-    this.handleSourceSelection('https://raw.githubusercontent.com/facebook/react/master/README.md')
+  loadReadme = (readme) =>  () => {    
+    this.handleSourceSelection(`https://raw.githubusercontent.com/${readme}`)
   }
-
-  loadRedux = () => {
-    this.handleSourceSelection('https://raw.githubusercontent.com/reactjs/redux/master/README.md')
-  }
-
-  loadVSCode = () => {
-    this.handleSourceSelection('https://raw.githubusercontent.com/Microsoft/vscode/master/README.md')
-  }
-
-
+  
   render() {
     const { src } = this.state
     return (
@@ -68,9 +60,10 @@ export default class Home extends Component {
           <LoadForm onSelected={this.handleSourceSelection} src={src}/>
           <Message>Or try these README.md from github</Message>
           <Links>
-            <ReactIcon onClick={this.loadReact} height="40" width="40" />
-            <ReduxIcon onClick={this.loadRedux} height="40" width="40" />
-            <VSCodeIcon onClick={this.loadVSCode} height="40" width="40" />
+            <NpmIcon onClick={this.loadReadme('npm/npm/latest/README.md')} height="40" width="40" />
+            <ReactIcon onClick={this.loadReadme('facebook/react/master/README.md')} height="40" width="40" />
+            <ReduxIcon onClick={this.loadReadme('reactjs/redux/master/README.md')} height="40" width="40" />
+            <VSCodeIcon onClick={this.loadReadme('Microsoft/vscode/master/README.md')} height="40" width="40" />
           </Links>
           <Section>
             <Postcast src={src}/>
@@ -93,6 +86,9 @@ const Main = styled.div`
 const Links = styled.div`
   display: flex;
   align-items: center;
+  > svg {
+    padding: 0 5px;
+  }
 `
 
 const Message = styled.div`
