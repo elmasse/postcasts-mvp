@@ -6,6 +6,7 @@ import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import ReactIcon from '../components/icons/react'
 import ReduxIcon from '../components/icons/redux'
+import VSCodeIcon from '../components/icons/vscode'
 import Postcast from '../components/postcast'
 
 const encode = (url) => btoa(url)
@@ -49,6 +50,11 @@ export default class Home extends Component {
     this.handleSourceSelection('https://raw.githubusercontent.com/reactjs/redux/master/README.md')
   }
 
+  loadVSCode = () => {
+    this.handleSourceSelection('https://raw.githubusercontent.com/Microsoft/vscode/master/README.md')
+  }
+
+
   render() {
     const { src } = this.state
     return (
@@ -60,6 +66,7 @@ export default class Home extends Component {
           <Links>
             <ReactIcon onClick={this.loadReact} height="40" width="40" />
             <ReduxIcon onClick={this.loadRedux} height="40" width="40" />
+            <VSCodeIcon onClick={this.loadVSCode} height="40" width="40" />
           </Links>
           <Section>
             <Postcast src={src}/>
