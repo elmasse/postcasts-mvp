@@ -12,7 +12,11 @@ const isContentNode = node => node.type.displayName === 'Content'
 
 const processTextToSpeech = (children) => {
 
-  const sanitize = textNode => textNode.replace(/[·]/gi, '') //hmmmm....
+  const sanitize = textNode => {
+    return textNode
+      .replace(/[·]/gi, '') //hmmmm....
+      .replace(/http(s):\/\//, '')
+  }
 
   const walk = (c) => {
     const { children = [] } = c.props
