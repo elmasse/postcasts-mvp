@@ -39,7 +39,7 @@ export default class Frame extends Component {
     super(props)
     
     this.state = {
-      duration: props.duration || 1000,
+      duration: props.duration || 2000,
       textToSpeech: processTextToSpeech(props.children)
     }
 
