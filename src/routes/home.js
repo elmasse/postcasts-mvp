@@ -88,6 +88,7 @@ const Links = styled.div`
   align-items: center;
   > svg {
     padding: 0 5px;
+    cursor: pointer;
   }
 `
 
