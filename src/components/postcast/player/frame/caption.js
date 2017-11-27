@@ -18,7 +18,7 @@ const fadeIn = keyframes`
 
 const Captioned = styled.div`
   position: absolute;
-  bottom: 30px;
+  bottom: 35px;
   background: rgba(0,0,0,.3);
   color: black;
   animation: ${fadeIn} .3s ease-in; 
