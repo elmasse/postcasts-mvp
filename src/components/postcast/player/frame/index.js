@@ -58,26 +58,29 @@ export default class Frame extends Component {
 
     if (textToSpeech) {
       
-      this.utterance = new SpeechSynthesisUtterance(textToSpeech)
-      this.utterance.rate = 0.9
-      this.utterance.pitch = 0.75
-      this.utterance.voice = synth.getVoices().filter(l => l.lang === lang)[0]
+      const utterance = new SpeechSynthesisUtterance(textToSpeech)
+      utterance.rate = 0.9
+      utterance.pitch = 0.75
+      utterance.voice = synth.getVoices().filter(l => l.lang === lang)[0]
 
-      this.utterance.onerror = (...errors) => {
+      utterance.onerror = (...errors) => {
         console.log(errors)
       }
 
-      this.utterance.onend = () => {
+      utterance.onend = () => {
         if (this._cancelled) {
           this._cancelled = false
           return
         }
 
         const { playing } = this.props
-        console.log('speak end', textToSpeech, this.props.playing)
         if (playing) done()
       }
-      synth.speak(this.utterance)
+
+      synth.resume()
+      synth.cancel()
+      synth.speak(utterance)
+
     } else {
       this._running = window.setTimeout(( ) => {
         const { playing } = this.props
@@ -90,9 +93,6 @@ export default class Frame extends Component {
 
   stop = () => {
     if (synth.speaking) {
-      if (synth.paused) {
-        synth.resume()
-      }      
       this._cancelled = true
       synth.cancel()
     }
@@ -103,8 +103,8 @@ export default class Frame extends Component {
 
   shouldStartPlaying() {
     const { playing } = this.props
-
-    if (playing && !synth.paused) this.play()
+    
+    if (playing && !synth.paused && !synth.speaking) this.play()
 
     if (playing && synth.paused) synth.resume()
     
@@ -122,7 +122,8 @@ export default class Frame extends Component {
     }
   }
 
-  componentWillReceiveProps({ children }) {
+  componentWillReceiveProps(nextProps) {
+    const { children } = nextProps    
     if ( children !== this.props.children ) {
       this.stop()
       // TODO: check this...
@@ -130,6 +131,13 @@ export default class Frame extends Component {
         textToSpeech: processTextToSpeech(children)  // Hmmmm      
       })
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { playing, captions } = this.props
+    return nextState !== this.state
+      || nextProps.captions !== captions
+      || nextProps.playing !== playing
   }
 
   render() {
@@ -152,10 +160,8 @@ export default class Frame extends Component {
   }
 
   componentWillUnmount() {
-    this.utterance = null
     const { playing } = this.props
-    
-    if (playing) this.stop()    
+    if (playing) this.stop()
   }
 
 }
