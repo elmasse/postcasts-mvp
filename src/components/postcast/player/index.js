@@ -108,6 +108,7 @@ const Toolbar = styled.div`
   left: 0;
   right: 0;
   display: ${ ({ hide }) => hide ? 'none' : 'flex' };
+  align-items: center;
   transition: all .3s ease-out;
 `
 
