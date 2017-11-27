@@ -87,7 +87,7 @@ const Input = styled.input`
   outline-width: 0;
   width: 350px;
   text-align: center;
-  transition: all .5s ease;
+  transition: all .3s ease-in-out;
 
   &.expanded {
     width: 800px;
