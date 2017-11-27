@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import process from './processor'
-import Toolbar from './toolbar'
+import Play from './buttons/play'
 import Timeline from './timeline'
+import Captions from './buttons/captions'
 
 
 
@@ -17,7 +18,8 @@ export default class Player extends Component {
       active: 0,
       playing: false,
       frames: process(markdown),
-      captions: true
+      captions: true,
+      mouseOver: false
     }
   }
   
@@ -62,34 +64,34 @@ export default class Player extends Component {
     this.setState(prevState => ({ captions: !prevState.captions }) )
   }
 
+  handleMouseEnter = () => {
+    this.setState({mouseOver: true})
+  }
+
+  handleMouseLeave = () => {
+    this.setState({mouseOver: false})
+  }
+
   render() {
-    const { frames, active, playing, captions } = this.state    
+    const { frames, active, playing, captions, mouseOver } = this.state    
     const frame = {...frames[active]}
     const { type: Frame } = frame
 
     return (
-      <Container>
-        <Viewport>
-          <Frame {...frame.props} done={this.next} {...{ captions, playing }}/>
-        </Viewport>
-        <Toolbar
-          onPlay={this.handlePlay}
-          onPause={this.handlePause}
-          onStop={this.handleStop}
-          playing={playing}
-        >
-          <Timeline active={active} frames={frames} onChangeFrame={this.handleFrameChange} />
-          <button onClick={this.handleToggleCaptions}>Captions: {captions ? 'On' : 'Off'} </button>
+      <Viewport onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
+        <Frame {...frame.props} done={this.next} {...{ captions, playing }}/>
+        <Toolbar hide={playing && !mouseOver}>
+          <Controls>
+            <Play onPlay={this.handlePlay} onPause={this.handlePause} playing={playing} size={30}/>          
+            <Captions onToggle={this.handleToggleCaptions} captions={captions} size={30}/>
+          </Controls>
+          <Timeline active={active} frames={frames} onChangeFrame={this.handleFrameChange} />          
         </Toolbar>
-      </Container>
+      </Viewport>
     )
   }
-}
 
-const Container = styled.div`
-  display: flex;
-  flex: 1;
-`
+}
 
 const Viewport = styled.div`
   position: relative;
@@ -98,4 +100,18 @@ const Viewport = styled.div`
   align-items: stretch;
   justify-content: center; 
   flex: 1; 
+`
+
+const Toolbar = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: ${ ({ hide }) => hide ? 'none' : 'flex' };
+  transition: all .3s ease-out;
+`
+
+const Controls = styled.div`
+  display: flex;
+  padding: 2px 5px;
 `

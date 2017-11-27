@@ -47,8 +47,6 @@ export default class Frame extends Component {
       textToSpeech: processTextToSpeech(props.children)
     }
 
-    this.shouldStartPlaying()
-
   }
 
   play = () => {
@@ -59,6 +57,7 @@ export default class Frame extends Component {
     this._running = undefined
 
     if (textToSpeech) {
+      
       this.utterance = new SpeechSynthesisUtterance(textToSpeech)
       this.utterance.rate = 0.9
       this.utterance.pitch = 0.75
@@ -91,6 +90,9 @@ export default class Frame extends Component {
 
   stop = () => {
     if (synth.speaking) {
+      if (synth.paused) {
+        synth.resume()
+      }      
       this._cancelled = true
       synth.cancel()
     }
@@ -101,7 +103,7 @@ export default class Frame extends Component {
 
   shouldStartPlaying() {
     const { playing } = this.props
-    
+
     if (playing && !synth.paused) this.play()
 
     if (playing && synth.paused) synth.resume()
@@ -112,16 +114,15 @@ export default class Frame extends Component {
 
   resetAnchorTarget = () => {
     const root = findDOMNode(this)
-    if (root) {
+    if (root && root.querySelectorAll) {
       root.querySelectorAll('a[href^="http://"], a[href^="https://"]').forEach(tag => { 
         tag.target = '_blank'
         tag.rel='noopener noreferrer'
-        console.log(tag.href)
       })
     }
   }
 
-  componentWillReceiveProps({ children }) {    
+  componentWillReceiveProps({ children }) {
     if ( children !== this.props.children ) {
       this.stop()
       // TODO: check this...
@@ -143,20 +144,20 @@ export default class Frame extends Component {
   componentDidUpdate() {
     this.resetAnchorTarget()
     this.shouldStartPlaying()
-    
   }
 
   componentDidMount() {
     this.resetAnchorTarget()
+    this.shouldStartPlaying()
   }
 
   componentWillUnmount() {
     this.utterance = null
     const { playing } = this.props
     
-    if (playing) this.stop()
-    
+    if (playing) this.stop()    
   }
+
 }
 
 const Framed = styled.div`
