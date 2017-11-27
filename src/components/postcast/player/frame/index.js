@@ -59,8 +59,8 @@ export default class Frame extends Component {
     if (textToSpeech) {
       
       const utterance = new SpeechSynthesisUtterance(textToSpeech)
-      utterance.rate = 0.9
-      utterance.pitch = 0.75
+      // utterance.rate = 0.9
+      // utterance.pitch = 0.75
       utterance.voice = synth.getVoices().filter(l => l.lang === lang)[0]
 
       utterance.onerror = (...errors) => {
@@ -77,7 +77,7 @@ export default class Frame extends Component {
         if (playing) done()
       }
 
-      synth.resume()
+      if (synth.paused) synth.resume()
       synth.cancel()
       synth.speak(utterance)
 
