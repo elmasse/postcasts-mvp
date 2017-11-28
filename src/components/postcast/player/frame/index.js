@@ -173,4 +173,10 @@ const Framed = styled.div`
   color: black;
   background: white;
   flex: 1;
+  overflow: scroll;
+
+  & > div {
+    margin: auto;
+    padding: 30px;
+  }
 `
