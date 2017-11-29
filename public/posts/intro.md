@@ -6,7 +6,7 @@ This **PostCast** will teach you how to get started producing your own _guide_.
 
 ## Introduction
 
-To start creating a `PostCast` just create a markdown file like first-post.md.
+To start creating a `PostCast`, just create a markdown file like `first-post.md`.
 
 ```shell
 
