@@ -76,7 +76,7 @@ const frameify = ({ data }) => (tree) => {
         }
         break
       default:
-        console.log(`${tagName} is not processed`)
+        console.warn(`${tagName} is not processed`)
         break
     }
 

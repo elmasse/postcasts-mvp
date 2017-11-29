@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 
 import process from './processor'
-import Play from './buttons/play'
+import Runner from './runner'
+import Frame from './frame'
 import Timeline from './timeline'
+import Play from './buttons/play'
 import Captions from './buttons/captions'
-
-
 
 export default class Player extends Component {
 
@@ -75,11 +75,11 @@ export default class Player extends Component {
   render() {
     const { frames, active, playing, captions, mouseOver } = this.state    
     const frame = {...frames[active]}
-    const { type: Frame } = frame
-
+    
     return (
       <Viewport onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-        <Frame {...frame.props} done={this.next} {...{ captions, playing }}/>
+        <Runner key={`runner-${frame.key}`} frame={frame} play={playing} pause={!playing} onEnd={this.next}/>
+        <Frame {...frame.props} captions={captions}/>
         <Toolbar hide={playing && !mouseOver}>
           <Controls>
             <Play onPlay={this.handlePlay} onPause={this.handlePause} playing={playing} size={30}/>          
