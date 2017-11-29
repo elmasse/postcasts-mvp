@@ -52,13 +52,8 @@ const frameify = ({ data }) => (tree) => {
           content = h('postcast-content', [node])
           frames.push(h('postcast-frame', [content]))
         } else {
-          // const [lastFrame] = [...frames].reverse()
-          // if (lastFrame && isFrameCode(lastFrame)) {
-          //   lastFrame.children.push(caption)
-          // } else {
-          caption = h('postcast-caption', [node])
-          frames.push(h('postcast-frame', [content, caption]))
-          // }
+            caption = h('postcast-caption', [node])
+            frames.push(h('postcast-frame', [content, caption]))
         }
         break
       case 'pre':
