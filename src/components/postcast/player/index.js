@@ -7,6 +7,7 @@ import Frame from './frame'
 import Timeline from './timeline'
 import Play from './buttons/play'
 import Captions from './buttons/captions'
+import Language from './buttons/language'
 
 export default class Player extends Component {
 
@@ -84,8 +85,9 @@ export default class Player extends Component {
           <Controls>
             <Play onPlay={this.handlePlay} onPause={this.handlePause} playing={playing} size={30}/>          
             <Captions onToggle={this.handleToggleCaptions} captions={captions} size={30}/>
+            <Language size={30} />
           </Controls>
-          <Timeline active={active} frames={frames} onChangeFrame={this.handleFrameChange} />          
+          <Timeline active={active} frames={frames} onChangeFrame={this.handleFrameChange} />
         </Toolbar>
       </Viewport>
     )
