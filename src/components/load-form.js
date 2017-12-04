@@ -43,13 +43,13 @@ export default class LoadForm extends Component {
 
   shouldFixUrl() {
     const { src } = this.state
-    const { protocol, hostname, owner, name, branch, filepath  } = gh(src)
+    const { protocol, hostname, owner, name, blob } = gh(src)
 
     if (hostname === 'github.com') {
 
       this.setState({
         hostname,
-        fixed: `${protocol}//raw.githubusercontent.com/${owner}/${name}/${branch}/${filepath}`
+        fixed: `${protocol}//raw.githubusercontent.com/${owner}/${name}/${blob}`
       })
       
       return true
@@ -66,6 +66,7 @@ export default class LoadForm extends Component {
       fixed: '',
       hostname: ''
     })
+    
     onSelected(fixed)
     
   }
