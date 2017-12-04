@@ -64,7 +64,7 @@ export default class LoadForm extends Component {
           onKeyPress={this.handleKeyPress}
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
-        />        
+        />
       </Form>
     )
   }
