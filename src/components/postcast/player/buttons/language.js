@@ -5,7 +5,7 @@ export default class Language extends Component {
 
 
   render () {
-    const { language = 'en-US', size = 48, fill = 'black',  ...props } = this.props
+    const { language = 'en-US', size = 48, fill = 'black' } = this.props
     
     return (
       <Button size={size} fill={fill}>
