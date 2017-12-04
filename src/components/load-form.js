@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
+import gh from 'parse-github-url'
 
 export default class LoadForm extends Component {
     
@@ -8,7 +9,8 @@ export default class LoadForm extends Component {
 
     this.state = {
       src: props.src || '',
-      focused: !!props.src
+      focused: !!props.src,
+      fixed: ''
     }
   }
 
@@ -32,9 +34,40 @@ export default class LoadForm extends Component {
 
   handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault()      
-      this.handleSubmit()
+      event.preventDefault()
+      if (!this.shouldFixUrl()) {
+        this.handleSubmit()
+      }
     }
+  }
+
+  shouldFixUrl() {
+    const { src } = this.state
+    const { protocol, hostname, owner, name, branch, filepath  } = gh(src)
+
+    if (hostname === 'github.com') {
+
+      this.setState({
+        hostname,
+        fixed: `${protocol}//raw.githubusercontent.com/${owner}/${name}/${branch}/${filepath}`
+      })
+      
+      return true
+    }
+    return false
+  }
+
+  handleFixed = () => {
+    const { onSelected } = this.props
+    const { src, fixed } = this.state
+
+    this.setState({
+      src: fixed,
+      fixed: '',
+      hostname: ''
+    })
+    onSelected(fixed)
+    
   }
 
   handleSubmit = () => {
@@ -52,7 +85,7 @@ export default class LoadForm extends Component {
   }
 
   render() {
-    const { src, focused } = this.state
+    const { src, focused, hostname, fixed } = this.state
     return (
       <Form focused={focused}>
         <Input
@@ -65,6 +98,10 @@ export default class LoadForm extends Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
         />
+        <Message show={!!fixed}>
+           {hostname} does not provides raw content. You might want to try:
+           <Fix onClick={this.handleFixed}>{fixed}</Fix>
+        </Message>
       </Form>
     )
   }
@@ -73,6 +110,7 @@ export default class LoadForm extends Component {
 
 const Form = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
 `
 
@@ -96,3 +134,18 @@ const Input = styled.input`
   }
 `
 
+const Message = styled.div`
+  display: ${({ show }) => show ? 'block': 'none'};
+  transition: all .3s ease-in-out;
+  font-weight: 200;
+  text-align: center;
+  padding: 10px;
+  background: rgba(200, 0 , 0, .5);
+  margin-top: 10px;    
+`
+
+const Fix = styled.div`
+  text-decoration: underline;
+  font-weight: 300;
+  cursor: pointer;
+`

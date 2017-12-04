@@ -9,6 +9,7 @@
     "ganalytics": "^2.0.1",
     "hastscript": "^3.1.0",
     "highlight.js": "^9.12.0",
+    "parse-github-url": "^1.0.1",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-emotion": "^8.0.8",
