@@ -59,7 +59,7 @@ export default class LoadForm extends Component {
 
   handleFixed = () => {
     const { onSelected } = this.props
-    const { src, fixed } = this.state
+    const { fixed } = this.state
 
     this.setState({
       src: fixed,
@@ -100,7 +100,7 @@ export default class LoadForm extends Component {
           onBlur={this.handleBlur}
         />
         <Message show={!!fixed}>
-           {hostname} does not provides raw content. You might want to try:
+           {hostname} does not provide a markdown file. You might want to try
            <Fix onClick={this.handleFixed}>{fixed}</Fix>
         </Message>
       </Form>
