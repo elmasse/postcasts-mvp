@@ -65,6 +65,7 @@ const frameify = ({ data }) => (tree) => {
         frames.push(h('postcast-frame', [content]))
         break
       case 'ul':
+      case 'ol':
         const uls = node.children.filter((c) => !['\n'].includes(c.value))
         for (const child of uls) {
           content = h('postcast-content', [h('ul', [child])])
