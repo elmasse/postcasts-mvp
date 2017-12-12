@@ -44,6 +44,7 @@ const frameify = ({ data }) => (tree) => {
       case 'h4':
       case 'img':
       case 'blockquote':
+      case 'table':
         content = h('postcast-content', [node])
         frames.push(h('postcast-frame', [content]))
         break

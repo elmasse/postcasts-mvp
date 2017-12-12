@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { css } from 'react-emotion'
+import styled, { css } from 'react-emotion'
 
 export default class Content extends Component {
   static displayName = 'Content'
@@ -7,12 +7,23 @@ export default class Content extends Component {
   render () {
     const { children } = this.props
     return (
-      <div css={scrollable}>{children}</div>
+      <Container css={scrollable}>{children}</Container>
     )
   }
 }
 
 const scrollable = css`
   margin: auto;
+`
+
+const table = css`
+  table tr td img {
+    width: 100%;
+    object-fit: contain;
+  }
+`
+const Container = styled.div`
+  ${scrollable}
+  ${table}
   padding: 30px;
 `
