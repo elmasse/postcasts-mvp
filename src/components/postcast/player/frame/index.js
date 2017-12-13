@@ -20,13 +20,6 @@ export default class Frame extends Component {
     }
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const { playing, captions } = this.props
-  //   return nextState !== this.state
-  //     || nextProps.captions !== captions
-  //     || nextProps.playing !== playing
-  // }
-
   render() {
     const { children, playing, captions, ...props } = this.props
     return (

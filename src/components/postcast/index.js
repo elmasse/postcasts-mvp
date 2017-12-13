@@ -71,7 +71,13 @@ export default class PostCast extends Component  {
 
 const Container = styled('div') `
   height: 500px;
-  width: 900px;
+  width: 900px;  
+
+  @media (max-width: 800px) {
+    height: 60vh;
+    width: 80vw;  
+  }
+  
   background: #181818;
   position: relative;
   display: flex;
