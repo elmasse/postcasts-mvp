@@ -5,34 +5,11 @@ import ga from '../analytics'
 
 import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
-import NpmIcon from '../components/icons/npm'
-import ReactIcon from '../components/icons/react'
-import ReduxIcon from '../components/icons/redux'
-import VSCodeIcon from '../components/icons/vscode'
-import Postcast from '../components/postcast'
+
 
 const encode = (url) => btoa(url)
-const decode = (encoded) => atob(encoded)
 
 export default class Home extends Component {
-
-  constructor(props){
-    super(props)
-    const { match } = props
-    this.state = {
-      src: match ? decode(props.match.params.encoded) : ''
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { match } = this.props
-
-    if ( match !== nextProps.match ) {
-      this.setState({
-        src: nextProps.match ? decode(nextProps.match.params.encoded) : ''
-      })
-    }
-  }
 
   handleHomeNav = () => {
     const { history } = this.props
@@ -46,58 +23,43 @@ export default class Home extends Component {
     
     history.push(`/play/${encode(src)}`)
   }
-
-  loadReadme = (readme) =>  () => {    
-    this.handleSourceSelection(`https://raw.githubusercontent.com/${readme}`)
-  }
   
   render() {
-    const { src } = this.state
     return (
-      <div>
+      <main>
         <Navigation onNavHome={this.handleHomeNav}/>
-        <Main hasSrc={!!src}>
-          <LoadForm onSelected={this.handleSourceSelection} src={src}/>
-          <Message>Or try these README.md from github</Message>
-          <Links>
-            <NpmIcon onClick={this.loadReadme('npm/npm/latest/README.md')} height="40" width="40" />
-            <ReactIcon onClick={this.loadReadme('facebook/react/master/README.md')} height="40" width="40" />
-            <ReduxIcon onClick={this.loadReadme('reactjs/redux/master/README.md')} height="40" width="40" />
-            <VSCodeIcon onClick={this.loadReadme('Microsoft/vscode/master/README.md')} height="40" width="40" />
-          </Links>
-          <Section>
-            <Postcast src={src}/>
-          </Section>
-        </Main>
-      </div>
+        <Content>
+          <h2>What is it?</h2>
+          <p>
+            Postcast easily creates a simple video like experience for posts or guides.             
+            It generates a stream with frames. These frames will contain the most important elements such as titles, lists, images, tables, etc. 
+            All paragraphs will be used as captioned text.            
+          </p>
+          <h2>Why?</h2>
+          <p>    
+            Create video content is way too expensive in terms of time and effort. Specially for simple things like small guides.
+            Interactivity is also really hard. You can't click on a link in a video. With Postcast you can. 
+            It makes it easy to translate content with not much effort. And editing is, well, it's just text.
+          </p>
+          <h2>How does it look like?</h2>
+          <p>
+            Give it a try using the form below. You can click in any of the icons to load those project's Readme file.
+            Or you can try your own! Just paste a url to a markdown file.
+          </p>
+        </Content>
+        <LoadForm onSelected={this.handleSourceSelection} />        
+      </main>
     )
   }
 }
 
-const Main = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;  
-  padding: ${({hasSrc}) => hasSrc ? '0 50px 0px': '50px 50px 0' };
-  transition: all .3s ease;
-`
+const Content = styled.div`
+  max-width: 800px;
+  margin: 30px auto 50px;
 
-const Links = styled.div`
-  display: flex;
-  align-items: center;
-  > svg {
-    padding: 0 5px;
-    cursor: pointer;
+  p {
+    line-height: 1.5;
+    font-weight: 300;
   }
-`
 
-const Message = styled.div`
-  font-size: 14px;
-  margin: 10px;
-  font-weight: 100;
-
-`
-const Section = styled.div`
-  padding: 30px 0;
 `

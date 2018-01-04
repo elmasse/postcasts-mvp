@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import ga from './analytics'
 
 import Home from './routes/home'
+import Play from './routes/play'
 
 export default class App extends Component {
   
@@ -11,13 +12,15 @@ export default class App extends Component {
     return (
       <Router>
         <div>
-          <Route 
+          <Route exact path="/" component={Home} />
+          <Route exact path="/play/:encoded" component={Play} />
+          {/* <Route exact
             path="/play/:encoded" 
             children={ (props) => {
-              return (<Home {...props} />)
+              return (<Play {...props} />)
             } }
-          />
-      </div>
+          /> */}
+      </div>      
     </Router>
     )
   }

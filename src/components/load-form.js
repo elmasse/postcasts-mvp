@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import styled from 'react-emotion'
 import gh from 'parse-github-url'
 
+import NpmIcon from '../components/icons/npm'
+import ReactIcon from '../components/icons/react'
+import ReduxIcon from '../components/icons/redux'
+import VSCodeIcon from '../components/icons/vscode'
+
 export default class LoadForm extends Component {
     
   constructor(props) {
@@ -77,6 +82,12 @@ export default class LoadForm extends Component {
     onSelected(src)
   }
 
+  loadReadme = (readme) =>  () => {
+    const { onSelected } = this.props
+    onSelected(`https://raw.githubusercontent.com/${readme}`)
+  }
+  
+
   handleFocus = () => {
     this.setState({focused: true})
   }
@@ -99,10 +110,18 @@ export default class LoadForm extends Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
         />
-        <Message show={!!fixed}>
+        <Alert show={!!fixed}>
            {hostname} does not provide a markdown file. You might want to try
            <Fix onClick={this.handleFixed}>{fixed}</Fix>
-        </Message>
+        </Alert>
+      
+      <Message>Or try these README.md from github</Message>
+      <Links>
+        <NpmIcon onClick={this.loadReadme('npm/npm/latest/README.md')} height="40" width="40" />
+        <ReactIcon onClick={this.loadReadme('facebook/react/master/README.md')} height="40" width="40" />
+        <ReduxIcon onClick={this.loadReadme('reactjs/redux/master/README.md')} height="40" width="40" />
+        <VSCodeIcon onClick={this.loadReadme('Microsoft/vscode/master/README.md')} height="40" width="40" />
+      </Links>
       </Form>
     )
   }
@@ -135,7 +154,7 @@ const Input = styled.input`
   }
 `
 
-const Message = styled.div`
+const Alert = styled.div`
   display: ${({ show }) => show ? 'block': 'none'};
   transition: all .3s ease-in-out;
   font-weight: 200;
@@ -149,4 +168,20 @@ const Fix = styled.div`
   text-decoration: underline;
   font-weight: 300;
   cursor: pointer;
+`
+
+const Links = styled.div`
+  display: flex;
+  align-items: center;
+  > svg {
+    padding: 0 5px;
+    cursor: pointer;
+  }
+`
+
+const Message = styled.div`
+  font-size: 14px;
+  margin: 10px;
+  font-weight: 100;
+
 `
