@@ -4,7 +4,7 @@ Postcast is a new way to teach and learn by creating content in a video-like way
 
 ## Benefits
 
-Some core benefits are:
+Some core benefits included,
 
 - Easy to create and update.
 - Multiple languages including examples are easy as translating a post.
@@ -36,3 +36,9 @@ And this paragraph will be used with text to Speech.
 ```
 
 This example will produce a video showing the title. The paragraph content will be spoken over the title and captioned to be read.
+
+Let's see what it looks like.
+
+# This is a title
+
+And this paragraph will be used with text to Speech.

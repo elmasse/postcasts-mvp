@@ -73,7 +73,6 @@ export default class LoadForm extends Component {
     })
     
     onSelected(fixed)
-    
   }
 
   handleSubmit = () => {
@@ -87,13 +86,25 @@ export default class LoadForm extends Component {
     onSelected(`https://raw.githubusercontent.com/${readme}`)
   }
   
-
   handleFocus = () => {
     this.setState({focused: true})
   }
 
   handleBlur = () => {    
     this.setState(({src, focused}) => ({focused: !!src}) )
+  }
+
+  handleLoadLocalFile = () => {
+    this.fileInput.click();
+  }
+
+  handleFileInputChange = (e) => {
+    const { onSelected } = this.props
+    const file = e.target.files[0]
+    if (file) {
+      console.log(file)
+      // onSelected(file)
+    }
   }
 
   render() {
@@ -110,18 +121,29 @@ export default class LoadForm extends Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
         />
+        <input
+          ref={input => this.fileInput = input}
+          onChange={this.handleFileInputChange}
+          type="file"
+          hidden
+        />
         <Alert show={!!fixed}>
-           {hostname} does not provide a markdown file. You might want to try
-           <Fix onClick={this.handleFixed}>{fixed}</Fix>
+          {hostname} does not provide a markdown file. You might want to try
+          <Fix onClick={this.handleFixed}>{fixed}</Fix>
         </Alert>
-      
-      <Message>Or try these README.md from github</Message>
-      <Links>
-        <NpmIcon onClick={this.loadReadme('npm/npm/latest/README.md')} height="40" width="40" />
-        <ReactIcon onClick={this.loadReadme('facebook/react/master/README.md')} height="40" width="40" />
-        <ReduxIcon onClick={this.loadReadme('reactjs/redux/master/README.md')} height="40" width="40" />
-        <VSCodeIcon onClick={this.loadReadme('Microsoft/vscode/master/README.md')} height="40" width="40" />
-      </Links>
+        <FlexContainer>
+          <Message>
+            {/* Use a local file {' '}
+             <Button onClick={this.handleLoadLocalFile} >Load</Button> {' '} */}
+            or try these README.md from github
+          </Message>
+          <Links>
+            <NpmIcon onClick={this.loadReadme('npm/npm/latest/README.md')} height="30" width="30" />
+            <ReactIcon onClick={this.loadReadme('facebook/react/master/README.md')} height="30" width="30" />
+            <ReduxIcon onClick={this.loadReadme('reactjs/redux/master/README.md')} height="30" width="30" />
+            <VSCodeIcon onClick={this.loadReadme('Microsoft/vscode/master/README.md')} height="30" width="30" />
+          </Links>
+        </FlexContainer>
       </Form>
     )
   }
@@ -133,7 +155,9 @@ const Form = styled.div`
   flex-direction: column;
   align-items: center;
 `
-
+const FlexContainer = styled.div`
+  display: flex;
+`
 const Input = styled.input`
   border: none;
   border-bottom: 1px solid #424242;
@@ -146,6 +170,7 @@ const Input = styled.input`
   width: 350px;
   text-align: center;
   transition: all .3s ease-in-out;
+  margin-bottom: 10px;
 
   &.expanded {
     width: 800px;
@@ -153,7 +178,6 @@ const Input = styled.input`
     font-size: ${({ value }) => 32 - (value.length / 6)}px;    
   }
 `
-
 const Alert = styled.div`
   display: ${({ show }) => show ? 'block': 'none'};
   transition: all .3s ease-in-out;
@@ -163,18 +187,20 @@ const Alert = styled.div`
   background: rgba(200, 0 , 0, .5);
   margin-top: 10px;    
 `
-
 const Fix = styled.div`
   text-decoration: underline;
   font-weight: 300;
   cursor: pointer;
+`
+const Button = styled.button`
+  background: #ccc;
 `
 
 const Links = styled.div`
   display: flex;
   align-items: center;
   > svg {
-    padding: 0 5px;
+    padding: 0 3px;
     cursor: pointer;
   }
 `
