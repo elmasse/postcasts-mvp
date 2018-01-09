@@ -164,7 +164,7 @@ const Input = styled.input`
   background: rgba(0,0,0, 0);
   font-size: ${({ value }) => 20 - (value.length / 6)}px;
   height: 22px;
-  color: #f1f1f1;
+  color: #888;
   font-weight: 100;
   outline-width: 0;
   width: 350px;
