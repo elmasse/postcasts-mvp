@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styled from 'react-emotion'
+import styled, { css } from 'react-emotion'
 
 import ga from '../analytics'
 
@@ -35,7 +35,7 @@ export default class Home extends Component {
             Postcast enables a different way to create content for lessons, guides or posts. You can use any markdown file
             to generate a postcast. Watch this little introduction to learn more!
           </Paragraph>
-          <Postcast src="/posts/intro.md" width="800" height="480"/>   
+          <Postcast src="/posts/intro.md" width="800" height="480" css={shadow}/>   
         </Main>
         <Section>
           <Title>Interactive. Searchable.</Title>
@@ -100,4 +100,8 @@ const Paragraph = styled.p`
   text-align: center;
   margin: 25px 0;
   max-width: 800px;
+`
+
+const shadow = css`
+  box-shadow: 0px -1px 15px 1px #181818;
 `
