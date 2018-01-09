@@ -30,29 +30,29 @@ export default class Home extends Component {
       <div>
         <Navigation onNavHome={this.handleHomeNav}/>
         <Main>
-          <h2>Create &amp; watch lessons differently.</h2>
-          <p>
+          <Title>Create &amp; watch lessons differently.</Title>
+          <Paragraph>
             Postcast enables a different way to create content for lessons, guides or posts. You can use any markdown file
             to generate a postcast. Watch this little introduction to learn more!
-          </p>
+          </Paragraph>
           <Postcast src="/posts/intro.md" width="800" height="480"/>          
-          <h2>Interactive. Searchable.</h2>
-          <p>
+          <Title>Interactive. Searchable.</Title>
+          <Paragraph>
             You can't click on a link in a video. With Postcast you can. Same for searching for content in a video you watched. 
             Translating a video requires to add subtitles, but you don't translate the content. Postcast makes it easy to translate content with not much effort. And editing is, well, it's just text.
-          </p>
-          <h2>Pause. Select &amp; Copy.</h2>
-          <p>
+          </Paragraph>
+          <Title>Pause. Select &amp; Copy.</Title>
+          <Paragraph>
             When you watch a video and you want to copy code or an example, or even just trying to copy a phrase you liked it's almost impossible.
             Postcast lets you pause, select and copy any content.
-          </p>  
-          <h2>Try it now!</h2>
-          <p>
-            Give it a try using the form below. You can click in any of the icons to load those project's Readme file.
-            Or you can try your own! Just paste a url to a markdown file.
-          </p>
+          </Paragraph>  
         </Main>
         <Section>
+          <Title>Try it now!</Title>
+          <Paragraph>
+            Give it a try using the form below. You can click in any of the icons to load those project's Readme file.
+            Or you can try your own! Just paste a url to a markdown file.
+          </Paragraph>
           <LoadForm onSelected={this.handleSourceSelection} />
         </Section>
       </div>
@@ -68,21 +68,6 @@ const Main = styled.main`
   
   max-width: 800px;
   margin: 50px auto 50px;
-  
-  > h2 {
-    font-size: 2.5em;
-    font-weight: 400;
-    font-family: 'PT Serif';
-    text-align: center;
-  }
-
-  > p {
-    font-size: 1.2em;
-    line-height: 1.5;
-    font-weight: 300;
-    text-align: center;
-    margin: 25px 0;
-  }
 `
 
 const Section = styled.section`
@@ -94,4 +79,19 @@ const Section = styled.section`
   background: #f1f1f1;
   color: black;
   min-height: 30vh;
+`
+
+const Title = styled.h2`
+  font-size: 2.5em;
+  font-weight: 400;
+  font-family: 'PT Serif';
+  text-align: center;
+`
+
+const Paragraph = styled.p`
+  font-size: 1.2em;
+  line-height: 1.5;
+  font-weight: 300;
+  text-align: center;
+  margin: 25px 0;
 `
