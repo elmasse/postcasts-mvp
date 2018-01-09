@@ -6,7 +6,7 @@ import ga from '../analytics'
 import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import Postcast from '../components/postcast'
-
+import Footer from '../components/footer'
 
 const encode = (url) => btoa(url)
 
@@ -35,19 +35,23 @@ export default class Home extends Component {
             Postcast enables a different way to create content for lessons, guides or posts. You can use any markdown file
             to generate a postcast. Watch this little introduction to learn more!
           </Paragraph>
-          <Postcast src="/posts/intro.md" width="800" height="480"/>          
+          <Postcast src="/posts/intro.md" width="800" height="480"/>   
+        </Main>
+        <Section>
           <Title>Interactive. Searchable.</Title>
           <Paragraph>
             You can't click on a link in a video. With Postcast you can. Same for searching for content in a video you watched. 
             Translating a video requires to add subtitles, but you don't translate the content. Postcast makes it easy to translate content with not much effort. And editing is, well, it's just text.
           </Paragraph>
+        </Section>
+        <Section>
           <Title>Pause. Select &amp; Copy.</Title>
           <Paragraph>
             When you watch a video and you want to copy code or an example, or even just trying to copy a phrase you liked it's almost impossible.
             Postcast lets you pause, select and copy any content.
           </Paragraph>  
-        </Main>
-        <Section>
+        </Section>
+        <Section light>
           <Title>Try it now!</Title>
           <Paragraph>
             Give it a try using the form below. You can click in any of the icons to load those project's Readme file.
@@ -55,6 +59,7 @@ export default class Home extends Component {
           </Paragraph>
           <LoadForm onSelected={this.handleSourceSelection} />
         </Section>
+        <Footer/>
       </div>
     )
   }
@@ -65,9 +70,7 @@ const Main = styled.main`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  
-  max-width: 800px;
-  margin: 50px auto 50px;
+  padding: 0 50px 50px 50px;
 `
 
 const Section = styled.section`
@@ -75,10 +78,12 @@ const Section = styled.section`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 50px;
-  background: #f1f1f1;
-  color: black;
   min-height: 30vh;
+
+  background: ${ ({light}) => light ? '#f1f1f1' : 'trasparent' };
+  color: ${ ({light}) => light ? '#000' : 'fff' };;
+  padding: ${ ({light}) => light ? '50px 0 90px 50px' : '50px' };
+  
 `
 
 const Title = styled.h2`
@@ -94,4 +99,5 @@ const Paragraph = styled.p`
   font-weight: 300;
   text-align: center;
   margin: 25px 0;
+  max-width: 800px;
 `

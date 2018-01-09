@@ -6,6 +6,7 @@ import ga from '../analytics'
 import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import Postcast from '../components/postcast'
+import Footer from '../components/footer'
 
 const encode = (url) => btoa(url)
 const decode = (encoded) => atob(encoded)
@@ -58,6 +59,7 @@ export default class Play extends Component {
             <Postcast src={src}/>
           </Section>
         </Main>
+        <Footer/>
       </div>
     )
   }
