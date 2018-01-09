@@ -82,8 +82,8 @@ const Section = styled.section`
 
   background: ${ ({light}) => light ? '#f1f1f1' : 'trasparent' };
   color: ${ ({light}) => light ? '#000' : 'fff' };;
-  padding: ${ ({light}) => light ? '50px 0 90px 50px' : '50px' };
-  
+  padding: ${ ({light}) => light ? '30px 0 90px 0' : '0 0 50px 0' };
+
 `
 
 const Title = styled.h2`
