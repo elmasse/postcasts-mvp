@@ -20,6 +20,7 @@
     "react-transition-group": "^2.2.1",
     "rehype-raw": "^2.0.0",
     "rehype-react": "^3.0.2",
+    "remark-emoji": "^2.0.0",
     "remark-parse": "^4.0.0",
     "remark-rehype": "^3.0.0",
     "serve": "^6.4.1",

@@ -3,6 +3,7 @@ import React from 'react'
 import unified from 'unified'
 import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
+import emoji from 'remark-emoji'
 import reactRenderer from 'rehype-react'
 import raw from 'rehype-raw'
 import u from 'unist-builder'
@@ -93,6 +94,7 @@ const process = markdown => {
 
   return unified()
     .use(remarkParse)
+    .use(emoji)
     .use(remark2rehype, { allowDangerousHTML: true })
     .use(raw)
     .use(cleanNodes)
