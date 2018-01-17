@@ -1,34 +1,15 @@
 import React, { Component } from 'react'
 import styled, { css } from 'react-emotion'
 
-import ga from '../analytics'
-
-import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import Postcast from '../components/postcast'
-import Footer from '../components/footer'
-
-const encode = (url) => btoa(url)
 
 export default class Home extends Component {
-
-  handleHomeNav = () => {
-    const { history } = this.props
-    history.push(`/`)
-  }
-  
-  handleSourceSelection = (src) => {
-    const { history } = this.props
-    
-    ga.send('event', { ec: 'load-src', ea: src })
-    
-    history.push(`/play/${encode(src)}`)
-  }
   
   render() {
+    const { onSourceSelection } = this.props
     return (
       <div>
-        <Navigation onNavHome={this.handleHomeNav}/>
         <Main>
           <Title>Create &amp; watch lessons differently.</Title>
           <Paragraph>
@@ -57,9 +38,8 @@ export default class Home extends Component {
             Give it a try using the form below. You can click in any of the icons to load those project's Readme file.
             Or you can try your own! Just paste a url to a markdown file.
           </Paragraph>
-          <LoadForm onSelected={this.handleSourceSelection} />
+          <LoadForm onSelected={onSourceSelection} />
         </Section>
-        <Footer/>
       </div>
     )
   }
@@ -103,5 +83,5 @@ const Paragraph = styled.p`
 `
 
 const shadow = css`
-  box-shadow: 0px -1px 15px 1px #181818;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, .8);
 `

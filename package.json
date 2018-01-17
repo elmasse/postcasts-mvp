@@ -9,6 +9,7 @@
     "ganalytics": "^2.0.1",
     "hastscript": "^3.1.0",
     "highlight.js": "^9.12.0",
+    "history": "^4.7.2",
     "parse-github-url": "^1.0.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

@@ -11,22 +11,26 @@ export default class LoadForm extends Component {
     
   constructor(props) {
     super(props)
-
+    const { src, file } = props
+    
     this.state = {
-      src: props.src || '',
-      focused: !!props.src,
+      src: src || '',
+      fileName: file ? file.name : '',
+      focused: !!src || !!file,
       fixed: ''
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { src } = this.props
-    if (src !== nextProps.src ) {
+    const { src, file } = this.props
+    if (src !== nextProps.src || file !== nextProps.file) {
       this.setState({
         src: nextProps.src,
-        focused: !!nextProps.src
+        fileName: nextProps.file ? nextProps.file.name : '',
+        focused: !!nextProps.src || !!nextProps.file
       })
     }
+    
   }
 
   handleInputChange = (event) => {
@@ -38,9 +42,11 @@ export default class LoadForm extends Component {
   }
 
   handleKeyPress = (event) => {
+    const { src } = this.state
+
     if (event.key === 'Enter') {
-      event.preventDefault()
-      if (!this.shouldFixUrl()) {
+      event.preventDefault()      
+      if (!src || !this.shouldFixUrl()) {
         this.handleSubmit()
       }
     }
@@ -78,12 +84,14 @@ export default class LoadForm extends Component {
   handleSubmit = () => {
     const { onSelected } = this.props
     const { src } = this.state
-    onSelected(src)
+    this.fileInput.value = ''
+    onSelected({src})
   }
 
   loadReadme = (readme) =>  () => {
     const { onSelected } = this.props
-    onSelected(`https://raw.githubusercontent.com/${readme}`)
+    this.fileInput.value = ''
+    onSelected({src: `https://raw.githubusercontent.com/${readme}`})
   }
   
   handleFocus = () => {
@@ -102,19 +110,19 @@ export default class LoadForm extends Component {
     const { onSelected } = this.props
     const file = e.target.files[0]
     if (file) {
-      console.log(file)
-      // onSelected(file)
+      onSelected({file})
     }
   }
 
   render() {
-    const { src, focused, hostname, fixed } = this.state
+    const { src, fileName, focused, hostname, fixed } = this.state
+    const inputValue = src || fileName
     return (
       <Form focused={focused}>
         <Input
           className={focused ? 'expanded' : ''}
           name="src"
-          value={src}
+          value={inputValue}
           placeholder="Enter a url to a markdown file"
           onChange={this.handleInputChange}
           onKeyPress={this.handleKeyPress}
@@ -125,6 +133,7 @@ export default class LoadForm extends Component {
           ref={input => this.fileInput = input}
           onChange={this.handleFileInputChange}
           type="file"
+          accept="text/markdown"
           hidden
         />
         <Alert show={!!fixed}>
@@ -133,8 +142,8 @@ export default class LoadForm extends Component {
         </Alert>
         <FlexContainer>
           <Message>
-            {/* Use a local file {' '}
-             <Button onClick={this.handleLoadLocalFile} >Load</Button> {' '} */}
+            Use a local file {' '}
+             <Button onClick={this.handleLoadLocalFile} >Load</Button> {' '}
             or try these README.md from github
           </Message>
           <Links>

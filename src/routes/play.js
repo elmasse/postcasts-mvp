@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'react-emotion'
 
-import ga from '../analytics'
 
-import Navigation from '../components/navigation'
 import LoadForm from '../components/load-form'
 import Postcast from '../components/postcast'
-import Footer from '../components/footer'
 
-const encode = (url) => btoa(url)
 const decode = (encoded) => atob(encoded)
 
 export default class Play extends Component {
@@ -17,50 +13,38 @@ export default class Play extends Component {
     super(props)
     const { match } = props
     this.state = {
-      src: match ? decode(props.match.params.encoded) : ''
+      src: match ? decode(match.params.encoded || '') : ''
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const { match } = this.props
-
     if ( match !== nextProps.match ) {
       this.setState({
-        src: nextProps.match ? decode(nextProps.match.params.encoded) : ''
+        src: nextProps.match ? decode(nextProps.match.params.encoded || '') : ''
       })
     }
   }
 
-  handleHomeNav = () => {
-    const { history } = this.props
-    history.push(`/`)
-  }
-  
-  handleSourceSelection = (src) => {
-    const { history } = this.props
-    
-    ga.send('event', { ec: 'load-src', ea: src })
-    
-    history.push(`/play/${encode(src)}`)
-  }
-
   loadReadme = (readme) =>  () => {    
-    this.handleSourceSelection(`https://raw.githubusercontent.com/${readme}`)
+    const { onSourceSelection } = this.props
+    onSourceSelection(`https://raw.githubusercontent.com/${readme}`)
   }
   
   render() {
     const { src } = this.state
+    const { onSourceSelection, file } = this.props
+    const hasSrc = (src || file) 
     return (
-      <div>
-        <Navigation onNavHome={this.handleHomeNav}/>
-        <Main hasSrc={!!src}>
-          <LoadForm onSelected={this.handleSourceSelection} src={src}/>
-          <Section>
-            <Postcast src={src}/>
-          </Section>
-        </Main>
-        <Footer/>
-      </div>
+      <Main hasSrc={hasSrc}>
+        <LoadForm onSelected={onSourceSelection} src={src} file={file}/>
+        <Section>
+          <Postcast
+            src={src}
+            file={file}
+          />
+        </Section>
+      </Main>
     )
   }
 }

@@ -14,15 +14,25 @@ export default class PostCast extends Component  {
   }
 
   async componentDidMount () {
-    const { src } = this.props
-    await this.fetchPost(src)
+    const { src, file } = this.props
+    if (src) {
+      await this.fetchPost(src)
+    }
+
+    if (file) {
+      await this.loadFile(file)
+    }
   }
 
    async componentDidUpdate(prevProps) {
-    const { src } = this.props
-    const { src: prevSrc } = prevProps
-    if (prevSrc !== src) {
+    const { src, file } = this.props
+    const { src: prevSrc, file: prevFile } = prevProps
+    if (src && prevSrc !== src) {
         await this.fetchPost(src)
+    }
+
+    if (file && prevFile !== file) {
+      await this.loadFile(file)
     }
   }
 
@@ -54,12 +64,38 @@ export default class PostCast extends Component  {
         markdown: ''
       })
     }
-  } 
+  }
+
+  async loadFile(file) {
+    async function fetchFileText() {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          resolve(e.target.result)
+        }
+        reader.readAsText(file)
+      })
+    }
+
+    if (file) {
+      const text = await fetchFileText(file)  
+      this.setState({
+        loaded: true,
+        loading: false,
+        markdown: text
+      })
+    } else {
+      this.setState({
+        loaded: false,
+        loading: false,
+        markdown: ''
+      })
+    }
+  }
 
   render () {
     const { src, ...props } = this.props
     const { loaded, loading, markdown } = this.state
-
     return (
       <Container {...props} >
         { loading && <Loading>Loading</Loading> }

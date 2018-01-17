@@ -1,27 +1,71 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
+import createBrowserHistory from "history/createBrowserHistory"
 
 import ga from './analytics'
+
+import Navigation from './components/navigation'
+import Footer from './components/footer'
 
 import Home from './routes/home'
 import Play from './routes/play'
 
+const history = createBrowserHistory()
+const encode = (url) => btoa(url)
+
 export default class App extends Component {
   
+  constructor(props) {
+    super(props)
+    this.state = {
+      file: null
+    }
+  }
+
+
+  handleHomeNav = () => {
+    history.push(`/`)
+  }
+
+  handleSourceSelection = ({ src = '', file = null }) => {
+
+    this.setState(() => {
+      if (src) {
+        ga.send('event', { ec: 'load-src', ea: src })
+        history.push(`/play/${encode(src)}`)  
+      }
+  
+      if (file) {
+        ga.send('event', { ec: 'load-file', ea: file.name })
+        history.push(`/play/`)
+      }
+
+      return {
+        file
+      }
+    })
+  }
+
   render() {
+    const { file } = this.state
+ 
     return (
-      <Router>
-        <div>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/play/:encoded" component={Play} />
-          {/* <Route exact
-            path="/play/:encoded" 
-            children={ (props) => {
-              return (<Play {...props} />)
-            } }
-          /> */}
-      </div>      
-    </Router>
+      <div>
+        <Navigation onNavHome={this.handleHomeNav}/>
+        <Router history={history}>
+          <div>
+            <Route exact              
+              path="/"
+              render={ (props) => <Home onSourceSelection={this.handleSourceSelection} {...props}/> }
+            />
+            <Route 
+              path="/play/:encoded?" 
+              render={ (props) => <Play onSourceSelection={this.handleSourceSelection} file={file} {...props}/> }
+            />
+          </div>      
+      </Router>
+      <Footer/>
+    </div>
     )
   }
 

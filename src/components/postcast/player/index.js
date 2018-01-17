@@ -24,6 +24,19 @@ export default class Player extends Component {
     }
   }
   
+  componentWillReceiveProps(nextProps) {
+    const { markdown } = this.props
+    if (markdown !== nextProps.markdown) {
+      this.setState({
+        active: 0,
+        playing: false,
+        frames: process(nextProps.markdown),
+        captions: true,
+        mouseOver: false
+      })
+    }
+  }
+
   handlePlay = () => {
     this.setState({
       playing: true
