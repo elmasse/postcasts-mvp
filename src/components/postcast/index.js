@@ -9,7 +9,8 @@ export default class PostCast extends Component  {
     super(props)
     this.state = { 
       loaded: false,
-      loading: false
+      loading: false,
+      error: null
     }
   }
 
@@ -39,14 +40,21 @@ export default class PostCast extends Component  {
   async fetchPost(src) {
     if (src) {
 
-      this.setState({ loading: true })
+      this.setState({ loading: true, error: null })
+
       const response = await fetch(src)
 
       console.log(response.headers.get("content-type"))
       
       if (!(response.headers.get("content-type").includes(`text/markdown`) ||
         response.headers.get("content-type").includes(`text/plain`))) {
-        throw new Error(`${src} is not a markdown file`)
+        
+        this.setState({
+          error:`${src} does not look like a markdown file!`,
+          loading: false
+        })
+
+        return
       }
 
       const text = await response.text()
@@ -67,6 +75,8 @@ export default class PostCast extends Component  {
   }
 
   async loadFile(file) {
+    this.setState({ loading: true, error: null })
+
     async function fetchFileText() {
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -95,11 +105,12 @@ export default class PostCast extends Component  {
 
   render () {
     const { src, ...props } = this.props
-    const { loaded, loading, markdown } = this.state
+    const { loaded, loading, markdown, error } = this.state
     return (
       <Container {...props} >
         { loading && <Loading>Loading</Loading> }
         { !loading && loaded && <Player markdown={markdown}></Player> }
+        { error && <Error><h2>Something went wrong</h2>{error}</Error>}
       </Container>
     )
   }
@@ -132,3 +143,10 @@ const Loading = styled('div')`
   justify-content: center;  
 `
 
+const Error = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  padding: 10px;
+`
