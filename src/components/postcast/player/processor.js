@@ -92,7 +92,9 @@ const process = markdown => {
 
   const { data, content } = fm(markdown)
 
-  return unified()
+  return {
+    data,
+    content: unified()
     .use(remarkParse)
     .use(emoji)
     .use(remark2rehype, { allowDangerousHTML: true })
@@ -109,6 +111,7 @@ const process = markdown => {
       }
     })
     .processSync(content).contents.props.children
+  }
 }
 
 export default process

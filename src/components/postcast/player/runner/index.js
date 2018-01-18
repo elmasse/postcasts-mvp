@@ -50,11 +50,13 @@ export default class Runner extends Component {
 
   render () {
     const { text, duration } = this.state
-    const { play, pause, onEnd } = this.props
+    const { play, pause, onEnd, metadata } = this.props
     const Runner = text ? Synth : Timer
 
+    const lang = metadata ? metadata.lang : ''
+
     return (
-      <Runner text={text} duration={duration} onEnd={onEnd} play={play} pause={pause}/>
+      <Runner text={text} duration={duration} onEnd={onEnd} play={play} pause={pause} lang={lang}/>
     )
   }
 }

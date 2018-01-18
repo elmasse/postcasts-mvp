@@ -14,11 +14,12 @@ export default class Player extends Component {
   constructor(props) {
     super(props)
     const { markdown } = props
-
+    const { data, content } = process(markdown)
     this.state = {
       active: 0,
       playing: false,
-      frames: process(markdown),
+      metadata: data,
+      frames: content,
       captions: true,
       mouseOver: false
     }
@@ -27,10 +28,12 @@ export default class Player extends Component {
   componentWillReceiveProps(nextProps) {
     const { markdown } = this.props
     if (markdown !== nextProps.markdown) {
+      const { data, content } = process(nextProps.markdown)
       this.setState({
         active: 0,
         playing: false,
-        frames: process(nextProps.markdown),
+        metadata: data,
+        frames: content,
         captions: true,
         mouseOver: false
       })
@@ -87,18 +90,19 @@ export default class Player extends Component {
   }
 
   render() {
-    const { frames, active, playing, captions, mouseOver } = this.state    
+    const { frames, active, playing, captions, mouseOver, metadata } = this.state    
     const frame = {...frames[active]}
-    
+    const language = metadata ? metadata.lang : undefined
+
     return (
       <Viewport onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-        <Runner key={`runner-${frame.key}`} frame={frame} play={playing} pause={!playing} onEnd={this.next}/>
+        <Runner key={`runner-${frame.key}`} frame={frame} metadata={metadata} play={playing} pause={!playing} onEnd={this.next}/>
         <Frame {...frame.props} captions={captions}/>
         <Toolbar hide={playing && !mouseOver}>
           <Controls>
             <Play onPlay={this.handlePlay} onPause={this.handlePause} playing={playing} size={30}/>          
             <Captions onToggle={this.handleToggleCaptions} captions={captions} size={30}/>
-            <Language size={30} />
+            <Language language={language} size={30} />
           </Controls>
           <Timeline active={active} frames={frames} onChangeFrame={this.handleFrameChange} />
         </Toolbar>
