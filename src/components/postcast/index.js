@@ -42,28 +42,36 @@ export default class PostCast extends Component  {
 
       this.setState({ loading: true, error: null })
 
-      const response = await fetch(src)
-
-      console.log(response.headers.get("content-type"))
+      try {
+        const response = await fetch(src)
       
-      if (!(response.headers.get("content-type").includes(`text/markdown`) ||
-        response.headers.get("content-type").includes(`text/plain`))) {
-        
+        if (!(response.headers.get("content-type").includes(`text/markdown`) ||
+          response.headers.get("content-type").includes(`text/plain`))) {
+          
+          this.setState({
+            error:`${src} does not look like a markdown file!`,
+            loading: false
+          })
+  
+          return
+        }
+  
+        const text = await response.text()
+  
         this.setState({
-          error:`${src} does not look like a markdown file!`,
+          loaded: true,
+          loading: false,
+          markdown: text
+        })
+      } catch (e) {
+        this.setState({
+          error:`Looks like we cannot connect to ${src}`,
           loading: false
         })
 
         return
       }
-
-      const text = await response.text()
-
-      this.setState({
-        loaded: true,
-        loading: false,
-        markdown: text
-      })
+      
 
     } else {
       this.setState({
