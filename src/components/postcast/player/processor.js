@@ -26,14 +26,14 @@ const onlyImages = (node) => {
   return true
 }
 
-const frameify = ({ data }) => (tree) => {
+const createItems = ({ data }) => (tree) => {
   const { children } = tree
-  const frames = []
+  const items = []
   let content, caption
 
   if (data && data.title) {
     content = h('postcast-content', [h('h1', [data.title])])
-    frames.push(h('postcast-frame', [content]))
+    items.push(content)
   }
 
   for (const node of children) {
@@ -46,31 +46,31 @@ const frameify = ({ data }) => (tree) => {
       case 'img':
       case 'blockquote':
       case 'table':
-        content = h('postcast-content', [node])
-        frames.push(h('postcast-frame', [content]))
+        content = h('postcast-content', [node])        
+        items.push(content)
         break
       case 'p':
         if (onlyImages(node)) {
           content = h('postcast-content', [node])
-          frames.push(h('postcast-frame', [content]))
+          items.push(content)
         } else {
-            caption = h('postcast-caption', [node])
-            frames.push(h('postcast-frame', [content, caption]))
+          caption = h('postcast-caption', [node])
+          items.push(caption)
         }
         break
       case 'pre':
         const { children, properties } = node.children[0]
         content = h('postcast-content', [
           h('postcast-code', properties, children)
-        ])
-        frames.push(h('postcast-frame', [content]))
+        ])        
+        items.push(content)
         break
       case 'ul':
       case 'ol':
         const uls = node.children.filter((c) => !['\n'].includes(c.value))
         for (const child of uls) {
-          content = h('postcast-content', [h('ul', [child])])
-          frames.push(h('postcast-frame', [content]))
+          content = h('postcast-content', [h('ul', [child])])          
+          items.push(content)
         }
         break
       default:
@@ -80,7 +80,7 @@ const frameify = ({ data }) => (tree) => {
 
   }
 
-  return u('root', frames)
+  return u('root', items)
 }
 
 const cleanNodes = () => tree => {
@@ -88,29 +88,50 @@ const cleanNodes = () => tree => {
   return tree
 }
 
+const createFrames = (items) => {
+  let content, caption
+  return items.map((item, idx, all) => {    
+    
+    if (item.type.displayName === 'Content') {
+      content = item
+      caption = undefined
+    } else {
+      caption = item
+    }
+
+    const children = [content]
+    if (caption)
+      children.push(caption)
+
+    return (
+      <Frame>
+        {children}
+      </Frame>
+    )
+  })
+}
+
 const process = markdown => {
 
   const { data, content } = fm(markdown)
-
-  return {
-    data,
-    content: unified()
+  const processor = unified()
     .use(remarkParse)
     .use(emoji)
     .use(remark2rehype, { allowDangerousHTML: true })
     .use(raw)
     .use(cleanNodes)
-    .use(frameify, { data })
+    .use(createItems, { data })
     .use(reactRenderer, {
       createElement: React.createElement,
       components: {
-        'postcast-frame': Frame,
         'postcast-content': Content,
         'postcast-caption': Caption,
         'postcast-code': Code
       }
     })
-    .processSync(content).contents.props.children
+  return {
+    data,
+    content: createFrames(processor.processSync(content).contents.props.children)
   }
 }
 

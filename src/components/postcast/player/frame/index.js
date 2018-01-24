@@ -22,9 +22,13 @@ export default class Frame extends Component {
 
   render() {
     const { children, playing, captions, ...props } = this.props
+    
     return (
       <Framed {...props}>
-        {children.filter( c => captions || (!isCaptionNode(c)) )}
+        {
+          children
+          .filter( c => captions || (!isCaptionNode(c)) )
+        }
       </Framed>
     )
   }

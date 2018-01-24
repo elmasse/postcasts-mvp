@@ -1,5 +1,5 @@
-import hljs from 'highlight.js';
-import React from 'react';
+import hljs from 'highlight.js'
+import React from 'react'
 // eslint-disable-next-line
 import css from 'highlight.js/styles/atom-one-light.css'
 
@@ -7,11 +7,11 @@ import css from 'highlight.js/styles/atom-one-light.css'
 class Highlight extends React.Component {
 
     componentDidMount() {
-        this.highlightCode();
+        this.highlightCode()
     }
 
     componentDidUpdate() {
-        this.highlightCode();
+        this.highlightCode()
     }
 
     highlightCode() {
@@ -23,25 +23,25 @@ class Highlight extends React.Component {
     }
 
     setEl = (el) => {
-        this.el = el;
-    };
+        this.el = el
+    }
 
     render() {
         const {children, className, element: Element, innerHTML} = this.props;
-        const props = { ref: this.setEl, className };
+        const props = { ref: this.setEl, className }
 
         if (innerHTML) {
-            props.dangerouslySetInnerHTML = { __html: children };
+            props.dangerouslySetInnerHTML = { __html: children }
             if (Element) {
-                return <Element {...props} />;
+                return <Element {...props} />
             }
-            return <div {...props} />;
+            return <div {...props} />
         }
 
         if (Element) {
-            return <Element {...props}>{children}</Element>;
+            return <Element {...props}>{children}</Element>
         }
-        return <pre ref={this.setEl}><code className={className}>{children}</code></pre>;
+        return <pre ref={this.setEl}><code className={className}>{children}</code></pre>
     }
 }
 
@@ -49,6 +49,7 @@ Highlight.defaultProps = {
     innerHTML: false,
     className: null,
     element: null,
-};
+}
 
-export default Highlight;
+export default Highlight
+

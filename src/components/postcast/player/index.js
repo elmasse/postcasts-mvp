@@ -92,12 +92,19 @@ export default class Player extends Component {
   render() {
     const { frames, active, playing, captions, mouseOver, metadata } = this.state    
     const frame = {...frames[active]}
+    const frameProps = frame.props
     const language = metadata ? metadata.lang : undefined
 
     return (
       <Viewport onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-        <Runner key={`runner-${frame.key}`} frame={frame} metadata={metadata} play={playing} pause={!playing} onEnd={this.next}/>
-        <Frame {...frame.props} captions={captions}/>
+        <Runner
+          frame={frame}
+          metadata={metadata}
+          play={playing}
+          pause={!playing}
+          onEnd={this.next}
+        />
+        <Frame {...frameProps} captions={captions}/>
         <Toolbar hide={playing && !mouseOver}>
           <Controls>
             <Play onPlay={this.handlePlay} onPause={this.handlePause} playing={playing} size={30}/>          

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import Highlight from './code-highlight'
+// import Typist from 'react-typist'
 import styled from 'react-emotion'
+
+import Highlight from './code-highlight'
 
 export default class Code extends Component {
   static displayName = 'Code'
@@ -8,16 +10,16 @@ export default class Code extends Component {
   render() {
     const { className = "", children } = this.props
     const [, lang] = className.split('-')
-    //   if (lang) {
     return (
-      <Pre className={`hljs hljs-${lang}`} style={{textAlign: 'left', minWidth: 450}}>
-        <Highlight languages={['javascript', 'json', 'markdown', 'shell', 'yaml', 'xml']} className={className}>{children.join('')}</Highlight>
+      <Pre className={`hljs hljs-${lang}`}>
+        <Highlight className={className}>{children}</Highlight>
       </Pre>
     )
-
   }
 }
 
 const Pre = styled.pre`
-  box-shadow: 0px 0 5px rgba(0,0,0,.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  text-align: left;
+  min-width: 450px;
 `

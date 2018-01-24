@@ -48,15 +48,16 @@ export default class Runner extends Component {
     }
   }
 
+
   render () {
     const { text, duration } = this.state
     const { play, pause, onEnd, metadata } = this.props
     const Runner = text ? Synth : Timer
-
+    const key = btoa(text).substr(10)
     const lang = metadata ? metadata.lang : ''
 
     return (
-      <Runner text={text} duration={duration} onEnd={onEnd} play={play} pause={pause} lang={lang}/>
+      <Runner key={key} text={text} duration={duration} onEnd={onEnd} play={play} pause={pause} lang={lang}/>
     )
   }
 }
