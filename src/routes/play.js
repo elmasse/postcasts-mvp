@@ -3,7 +3,7 @@ import styled from 'react-emotion'
 
 
 import LoadForm from '../components/load-form'
-import Postcast from '../components/postcast'
+import Postcast from 'postcast'
 
 const decode = (encoded) => atob(encoded)
 

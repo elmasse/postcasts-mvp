@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Router, Route } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
+import css from 'highlight.js/styles/atom-one-light.css'
 
 import ga from './analytics'
 
 import Navigation from './components/navigation'
 import Footer from './components/footer'
+
 
 import Home from './routes/home'
 import Play from './routes/play'

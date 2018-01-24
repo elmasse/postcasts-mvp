@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled, { css } from 'react-emotion'
 
 import LoadForm from '../components/load-form'
-import Postcast from '../components/postcast'
+import Postcast from 'postcast'
 
 export default class Home extends Component {
   
