@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Router, Route } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
+// eslint-disable-next-line 
 import css from 'highlight.js/styles/atom-one-light.css'
 
 import ga from './analytics'
