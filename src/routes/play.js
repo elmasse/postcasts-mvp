@@ -39,7 +39,7 @@ export default class Play extends Component {
     const { src, settings: {language, phonemes} } = this.state
     const { onSourceSelection, file, match: { params } } = this.props
     const hasSrc = (src || file) 
-console.log(this.state)
+
     return (
       <Main hasSrc={hasSrc}>
         <Section>
@@ -53,7 +53,7 @@ console.log(this.state)
         </Section>
         <Section>
           <LoadForm onSelected={onSourceSelection} src={src} file={file}/>
-          <Settings onSave={this.reloadWithSettings} language={language} phonemes={phonemes}/>
+          {src && <Settings onSave={this.reloadWithSettings} language={language} phonemes={phonemes}/>}
         </Section>
       </Main>
     )
