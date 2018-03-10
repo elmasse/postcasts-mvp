@@ -60,7 +60,8 @@ export default class Settings extends Component {
   }
 
   onSave = () => {
-    this.props.onSave(this.state)
+    const { language, phonemes } = this.state
+    this.props.onSave({ language, phonemes })
   }
 
   render() {
