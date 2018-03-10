@@ -41,7 +41,6 @@ export default class Play extends Component {
 
     return (
       <Main hasSrc={hasSrc}>
-        <LoadForm onSelected={onSourceSelection} src={src} file={file}/>
         <Section>
           <Postcast
             key={`postcast-${language}`}
@@ -51,7 +50,8 @@ export default class Play extends Component {
             phonemes={phonemes}
           />
         </Section>
-        <Section alignSelf="stretch">
+        <Section>
+          <LoadForm onSelected={onSourceSelection} src={src} file={file}/>
           <Settings onSave={this.reloadWithSettings} language={language} phonemes={phonemes}/>
         </Section>
       </Main>
@@ -69,6 +69,6 @@ const Main = styled.div`
 `
 
 const Section = styled.div`
+  max-width: 900px;
   padding: 30px 0;
-  ${( { alignSelf } ) => `align-self: ${alignSelf}`}
 `
