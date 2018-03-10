@@ -9,12 +9,16 @@ import ga from './analytics'
 import Navigation from './components/navigation'
 import Footer from './components/footer'
 
-
 import Home from './routes/home'
 import Play from './routes/play'
 
 const history = createBrowserHistory()
 const encode = (url) => btoa(url)
+const b64EncodeUnicode = (str) => {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+      return String.fromCharCode(parseInt(p1, 16))
+  }))
+}
 
 export default class App extends Component {
   
@@ -25,17 +29,15 @@ export default class App extends Component {
     }
   }
 
-
   handleHomeNav = () => {
     history.push(`/`)
   }
 
-  handleSourceSelection = ({ src = '', file = null }) => {
-
+  handleSourceSelection = ({ src = '', file = null, settings }) => {
     this.setState(() => {
       if (src) {
         ga.send('event', { ec: 'load-src', ea: src })
-        history.push(`/play/${encode(src)}`)  
+        history.push(`/play/${encode(src)}${settings ? `/${b64EncodeUnicode(JSON.stringify(settings))}` : ''}`)  
       }
   
       if (file) {
@@ -62,7 +64,7 @@ export default class App extends Component {
               render={ (props) => <Home onSourceSelection={this.handleSourceSelection} {...props}/> }
             />
             <Route 
-              path="/play/:encoded?" 
+              path="/play/:encoded?/:settings?" 
               render={ (props) => <Play onSourceSelection={this.handleSourceSelection} file={file} {...props}/> }
             />
           </div>      
