@@ -5,13 +5,7 @@ import LoadForm from '../components/load-form'
 import Settings from '../components/settings'
 import Postcast from 'postcast'
 
-const decode = (encoded) => atob(encoded)
-const b64DecodeUnicode = (str) => {
-  return decodeURIComponent(Array.prototype.map.call(atob(str), function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-  }).join(''))
-}
-
+import { decode } from '../base64'
 
 export default class Play extends Component {
 
@@ -20,7 +14,7 @@ export default class Play extends Component {
     const { match } = props
     this.state = {
       src: match ? decode(match.params.encoded || '') : '',
-      ...(match && match.params.settings ? JSON.parse(b64DecodeUnicode(match.params.settings)) : {})
+      ...(match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
     }
   }
 
@@ -29,7 +23,7 @@ export default class Play extends Component {
     if ( match !== prevMatch ) {
       this.setState({
         src: match ? decode(match.params.encoded || '') : '',
-        ...(match && match.params.settings ? JSON.parse(b64DecodeUnicode(match.params.settings)) : {})
+        ...(match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
       })
     }
   }

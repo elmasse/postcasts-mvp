@@ -5,6 +5,7 @@ import createBrowserHistory from "history/createBrowserHistory"
 import css from 'highlight.js/styles/atom-one-light.css'
 
 import ga from './analytics'
+import { encode } from './base64'
 
 import Navigation from './components/navigation'
 import Footer from './components/footer'
@@ -13,12 +14,6 @@ import Home from './routes/home'
 import Play from './routes/play'
 
 const history = createBrowserHistory()
-const encode = (url) => btoa(url)
-const b64EncodeUnicode = (str) => {
-  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-      return String.fromCharCode(parseInt(p1, 16))
-  }))
-}
 
 export default class App extends Component {
   
@@ -37,7 +32,7 @@ export default class App extends Component {
     this.setState(() => {
       if (src) {
         ga.send('event', { ec: 'load-src', ea: src })
-        history.push(`/play/${encode(src)}${settings ? `/${b64EncodeUnicode(JSON.stringify(settings))}` : ''}`)  
+        history.push(`/play/${encode(src)}${settings ? `/${encode(JSON.stringify(settings))}` : ''}`)  
       }
   
       if (file) {
