@@ -41,7 +41,7 @@ export default class Settings extends Component {
     this.setState({
       phonemes: {
         ...phonemes,
-        [phoneme.key]: [phoneme.value]
+        [phoneme.key]: phoneme.value
       },
       phoneme: {
         key: '', value: ''
@@ -49,12 +49,12 @@ export default class Settings extends Component {
     })
   }
 
-
   removePhoneme = (key) => {
     const { phonemes } = this.state
     delete phonemes[key]
+
     this.setState({
-      phonemes
+      phonemes: (Object.keys(phonemes).length > 0) ? phonemes : undefined 
     })
 
   }
