@@ -18,7 +18,7 @@ export default class Settings extends Component {
   componentWillReceiveProps({language, phonemes}) {
     this.setState({
       language,
-      phonemes   
+      phonemes
     })
   }
 
@@ -34,7 +34,7 @@ export default class Settings extends Component {
         [e.target.name]: e.target.value
       }
     })
-  }  
+  }
 
   addPhoneme = () => {
     const { phonemes, phoneme } = this.state
@@ -69,7 +69,7 @@ export default class Settings extends Component {
     return (
       <Container open>
         <Handler onClick={() => { this.setState((state) => ({ open: !state.open })) }}>
-          Settings {open ? '[-]' : '[+]'}
+        {open ? '▹' : '▿'} Settings
         </Handler>
         <Container open={open}>
           <Label htmlFor="language">Language </Label>
