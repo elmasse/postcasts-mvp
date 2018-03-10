@@ -14,7 +14,7 @@ export default class Play extends Component {
     const { match } = props
     this.state = {
       src: match ? decode(match.params.encoded || '') : '',
-      ...(match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
+      settings: (match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
     }
   }
 
@@ -23,7 +23,7 @@ export default class Play extends Component {
     if ( match !== prevMatch ) {
       this.setState({
         src: match ? decode(match.params.encoded || '') : '',
-        ...(match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
+        settings: (match && match.params.settings ? JSON.parse(decode(match.params.settings)) : {})
       })
     }
   }
@@ -33,17 +33,18 @@ export default class Play extends Component {
     const { src } = this.state
     onSourceSelection({ src, settings })
   }
+
   
   render() {
-    const { src, language, phonemes } = this.state
-    const { onSourceSelection, file } = this.props
+    const { src, settings: {language, phonemes} } = this.state
+    const { onSourceSelection, file, match: { params } } = this.props
     const hasSrc = (src || file) 
-
+console.log(this.state)
     return (
       <Main hasSrc={hasSrc}>
         <Section>
           <Postcast
-            key={`postcast-${language}`}
+            key={params ? params.encoded + params.settings : undefined}
             src={src}
             file={file}
             lang={language}
@@ -71,4 +72,4 @@ const Main = styled.div`
 const Section = styled.div`
   max-width: 900px;
   padding: 30px 0;
-`
+  `
