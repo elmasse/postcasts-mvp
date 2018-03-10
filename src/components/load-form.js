@@ -30,7 +30,6 @@ export default class LoadForm extends Component {
         focused: !!nextProps.src || !!nextProps.file
       })
     }
-    
   }
 
   handleInputChange = (event) => {
